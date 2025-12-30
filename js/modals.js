@@ -213,15 +213,19 @@ function createPaymentModal() {
 // --- LÓGICA DO DROPDOWN CUSTOMIZADO ---
 function togglePaymentDropdown() {
     const options = document.getElementById('paymentClientOptions');
-    const trigger = document.querySelector('.custom-select-trigger .dropdown-arrow');
-    
-    if (options.style.display === 'block') {
-        options.style.display = 'none';
-        trigger.style.transform = 'translateY(-50%) rotate(-180deg)'; // Seta pra baixo
+    const trigger = document.querySelector('.custom-select-trigger');
+    const arrow = document.querySelector('.custom-select-trigger .dropdown-arrow');
+
+    if (!options) return;
+
+    if (options.classList.contains('open')) {
+        // fecha com animação
+        options.classList.remove('open');
+        trigger && trigger.classList.remove('open');
     } else {
         renderCustomOptions(); // Recarrega lista
-        options.style.display = 'block';
-        trigger.style.transform = 'translateY(-50%) rotate(0deg)'; // Seta pra cima
+        options.classList.add('open');
+        trigger && trigger.classList.add('open');
     }
 }
 
@@ -254,8 +258,10 @@ function selectPaymentClient(client) {
     currentPaymentClient = client;
 
     // 2. Fecha o dropdown
-    document.getElementById('paymentClientOptions').style.display = 'none';
-    document.querySelector('.custom-select-trigger .dropdown-arrow').style.transform = 'translateY(-50%) rotate(-180deg)';
+    const optionsEl = document.getElementById('paymentClientOptions');
+    if (optionsEl) optionsEl.classList.remove('open');
+    const triggerEl = document.querySelector('.custom-select-trigger');
+    if (triggerEl) triggerEl.classList.remove('open');
 
     // 3. Atualiza o visual do Trigger (Campo de seleção)
     const totalDebt = getClientTotalDebt(client);
