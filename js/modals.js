@@ -3,10 +3,33 @@
 // 1. LISTA GLOBAL DE CLIENTES (Simulando Banco de Dados)
 // Colocamos aqui para ser acessível por todo o sistema
 let clientsList = [
-    { id: 1, name: 'João Silva', debt: '250,00' },
-    { id: 2, name: 'Maria Santos', debt: '180,50' },
-    { id: 3, name: 'Pedro Oliveira', debt: '320,75' },
-    { id: 4, name: 'Ana Costa', debt: '95,00' }
+    { 
+        id: 1, 
+        name: 'João Silva', 
+        debts: [
+            { id: 101, description: 'Troca de Óleo', date: '10/02/2024', due: '10/03/2024', value: 150.00, status: 'pendente' },
+            { id: 102, description: 'Alinhamento', date: '15/01/2024', due: '15/02/2024', value: 100.00, status: 'pago' }
+        ]
+    },
+    { 
+        id: 2, 
+        name: 'Maria Santos', 
+        debts: [
+            { id: 201, description: 'Revisão Geral', date: '05/02/2024', due: '05/03/2024', value: 180.50, status: 'pendente' }
+        ]
+    },
+    { 
+        id: 3, 
+        name: 'Pedro Oliveira', 
+        debts: [
+            { id: 301, description: 'Troca de Pneus', date: '20/02/2024', due: '20/03/2024', value: 320.75, status: 'pendente' }
+        ]
+    },
+    { 
+        id: 4, 
+        name: 'Ana Costa', 
+        debts: [] // Sem dívidas
+    }
 ];
 
 // --- FUNÇÃO PARA ADICIONAR NOVO CLIENTE ---
@@ -17,11 +40,18 @@ function addNewClient(name, phone, address) {
         name: name,
         phone: phone,
         address: address,
-        debt: '0,00'
+        debt: '[]'
     };
-    
+
     clientsList.push(newClient);
     return newClient;
+}
+// Helpers para cálculo de totais
+function getClientTotalDebt(client) {
+    return client.debts
+        .filter(d => d.status === 'pendente')
+        .reduce((acc, curr) => acc + curr.value, 0)
+        .toFixed(2).replace('.', ',');
 }
 
 // Criar estrutura dos modais dinamicamente
@@ -30,6 +60,8 @@ function createModals() {
     createSaleModal();
     createPaymentModal();
 }
+// Variável global para armazenar o cliente selecionado no modal de pagamento
+let currentPaymentClient = null;
 
 function createClientModal() {
     const modal = document.getElementById('clientModal');
@@ -113,45 +145,170 @@ function createPaymentModal() {
     const modal = document.getElementById('paymentModal');
     if (!modal) return;
 
+    // Estrutura atualizada conforme Figma
     modal.innerHTML = `
-        <div class="modal-container">
-            <div class="modal-title">Registrar Pagamento</div>
-            
-            <div class="form-field cliente-vinculado expanded">
-                <div class="form-field-bg expanded"></div>
-                <select class="form-field-select" id="paymentLinkedClient" onchange="updateDebtAmount(this)">
-                    <option value="">Selecione um cliente</option>
-                </select>
-                <label class="form-field-label payment-client">Cliente Vinculado</label>
-                <div class="debt-info" id="debtInfo">O valor da conta está em R$ 0,00</div>
-                <div class="dropdown-arrow"></div>
+        <div class="modal-container payment-container" id="paymentContainer">
+            <div class="payment-header">
+                <div class="modal-title">Registrar Pagamento</div>
+                <div class="modal-subtitle" id="paymentSubtitle">Selecione um cliente devedor e registre o pagamento.</div>
             </div>
-            
-            <div class="form-field valor-pago">
-                <div class="form-field-bg"></div>
-                <input type="text" class="form-field-input" id="paymentValue" placeholder="0,00">
-                <label class="form-field-label">Valor a ser pago:</label>
+
+            <div class="custom-select-wrapper">
+                <div class="custom-select-trigger" onclick="togglePaymentDropdown()">
+                    <span id="paymentSelectedName">Cliente Vinculado</span>
+                    <div class="dropdown-arrow"></div>
+                </div>
+                
+                <div class="custom-options" id="paymentClientOptions">
+                    </div>
             </div>
-            
-            <div class="form-field forma-pagamento">
-                <div class="form-field-bg"></div>
-                <select class="form-field-select" id="paymentMethod">
-                    <option value="">Selecione a forma de pagamento</option>
-                    <option value="dinheiro">Dinheiro</option>
-                    <option value="cartao_debito">Cartão de Débito</option>
-                    <option value="cartao_credito">Cartão de Crédito</option>
-                    <option value="pix">PIX</option>
-                    <option value="transferencia">Transferência</option>
-                </select>
-                <label class="form-field-label">Forma de pagamento:</label>
-                <div class="dropdown-arrow"></div>
+
+            <div id="paymentDetailsArea" class="payment-details hidden">
+                
+                <div class="debts-list-container" id="debtsList">
+                    </div>
+
+                <div class="payment-footer-inputs">
+                    <div class="footer-input-group">
+                        <label>Valor do Pagamento</label>
+                        <div class="input-box">
+                            <input type="text" id="payValueInput" placeholder="0,00" oninput="applyMoneyMask(this)">
+                        </div>
+                        <div class="input-helper" id="maxDebtHelper">Máximo: R$ 0,00</div>
+                    </div>
+
+                    <div class="footer-input-group">
+                        <label>Data do Pagamento</label>
+                        <div class="input-box">
+                            <input type="date" id="payDateInput">
+                        </div>
+                    </div>
+
+                    <div class="footer-input-group">
+                        <label>Método do Pagamento</label>
+                        <div class="input-box">
+                            <select id="payMethodInput">
+                                <option value="">Selecione o método</option>
+                                <option value="pix">PIX</option>
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartao">Cartão</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-cancel" onclick="closePaymentModal()">
+                        <span>Cancelar</span>
+                    </button>
+                    <button class="btn-confirm" onclick="confirmPayment()">
+                        <span>Registrar Pagamento</span>
+                    </button>
+                </div>
             </div>
-            
-            <button class="modal-btn primary payment-confirm" onclick="confirmPayment()">
-                <span class="modal-btn-text primary">CONFIRMAR</span>
-            </button>
         </div>
     `;
+}
+
+// --- LÓGICA DO DROPDOWN CUSTOMIZADO ---
+function togglePaymentDropdown() {
+    const options = document.getElementById('paymentClientOptions');
+    const trigger = document.querySelector('.custom-select-trigger .dropdown-arrow');
+    
+    if (options.style.display === 'block') {
+        options.style.display = 'none';
+        trigger.style.transform = 'translateY(-50%) rotate(-180deg)'; // Seta pra baixo
+    } else {
+        renderCustomOptions(); // Recarrega lista
+        options.style.display = 'block';
+        trigger.style.transform = 'translateY(-50%) rotate(0deg)'; // Seta pra cima
+    }
+}
+
+function renderCustomOptions() {
+    const container = document.getElementById('paymentClientOptions');
+    container.innerHTML = '';
+
+    clientsList.forEach(client => {
+        const totalDebt = getClientTotalDebt(client);
+        
+        // Se não tiver dívida, talvez nem mostre, ou mostre zerado.
+        // Vou mostrar todos conforme o design
+        
+        const div = document.createElement('div');
+        div.className = 'custom-option';
+        div.onclick = () => selectPaymentClient(client);
+        
+        div.innerHTML = `
+            <span class="client-name">${client.name}</span>
+            <div class="debt-tag">
+                R$ ${totalDebt}
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function selectPaymentClient(client) {
+    // 1. SALVAR O CLIENTE NA VARIÁVEL GLOBAL (Isso é crucial para o 'Salvar' funcionar depois)
+    currentPaymentClient = client;
+
+    // 2. Fecha o dropdown
+    document.getElementById('paymentClientOptions').style.display = 'none';
+    document.querySelector('.custom-select-trigger .dropdown-arrow').style.transform = 'translateY(-50%) rotate(-180deg)';
+
+    // 3. Atualiza o visual do Trigger (Campo de seleção)
+    const totalDebt = getClientTotalDebt(client);
+    const wrapper = document.querySelector('.custom-select-trigger');
+    
+    // Recria o HTML do trigger selecionado
+    wrapper.innerHTML = `
+        <span class="trigger-label">Débitos de ${client.name}</span>
+        <div class="debt-tag-large">R$ ${totalDebt}</div>
+        <div class="dropdown-arrow" style="transform: translateY(-50%) rotate(-180deg);"></div>
+    `;
+    wrapper.onclick = togglePaymentDropdown; // Reatribui o clique
+
+    // 4. Expande o Modal e Mostra Detalhes
+    const container = document.getElementById('paymentContainer');
+    container.classList.add('expanded');
+
+    const details = document.getElementById('paymentDetailsArea');
+    details.classList.remove('hidden');
+
+    // 5. Renderiza a lista e atualiza o helper
+    renderDebtsList(client);
+    document.getElementById('maxDebtHelper').textContent = `Máximo: R$ ${totalDebt}`;
+}
+
+function renderDebtsList(client) {
+    const list = document.getElementById('debtsList');
+    list.innerHTML = '';
+
+    client.debts.forEach(debt => {
+        const item = document.createElement('div');
+        item.className = 'debt-item';
+        
+        // Define cor da tag baseada no status
+        const tagClass = debt.status === 'pendente' ? 'tag-pending' : 'tag-paid';
+        const tagText = debt.status === 'pendente' ? 'Pendente' : 'Pago';
+        const valueColor = debt.status === 'pendente' ? '#C70404' : '#1C7B07'; // Vermelho ou Verde
+
+        item.innerHTML = `
+            <div class="debt-info">
+                <div class="debt-title">${debt.description}</div>
+                <div class="debt-dates">
+                    <span>Venda: ${debt.date}</span>
+                    <span style="margin-left: 15px">Vencimento em ${debt.due}</span>
+                </div>
+            </div>
+            <div class="debt-values">
+                <div class="debt-value" style="color: ${valueColor}">R$ ${debt.value.toFixed(2).replace('.', ',')}</div>
+                <div class="${tagClass}">${tagText}</div>
+            </div>
+        `;
+        list.appendChild(item);
+    });
 }
 
 // --- CONTROLE DOS MODAIS ---
@@ -176,6 +333,42 @@ function closeModal(modalId) {
         modal.classList.remove('show');
         setTimeout(() => modal.style.display = 'none', 200);
     }
+}
+
+function openPaymentModal() {
+    openModal('paymentModal');
+    
+    // Limpa seleção anterior
+    currentPaymentClient = null; 
+    
+    // ... restante do código de reset (container.classList.remove('expanded'), etc)
+    const container = document.getElementById('paymentContainer');
+    if(container) container.classList.remove('expanded');
+    
+    const details = document.getElementById('paymentDetailsArea');
+    if(details) details.classList.add('hidden');
+
+    const trigger = document.querySelector('.custom-select-trigger');
+    if(trigger) {
+        trigger.innerHTML = `
+            <span id="paymentSelectedName">Cliente Vinculado</span>
+            <div class="dropdown-arrow"></div>
+        `;
+        trigger.onclick = togglePaymentDropdown;
+    }
+    
+    // Data de hoje
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('payDateInput');
+    if(dateInput) dateInput.value = today;
+    
+    // Limpa inputs
+    document.getElementById('payValueInput').value = '';
+    document.getElementById('payMethodInput').selectedIndex = 0;
+}
+
+function closePaymentModal() {
+    closeModal('paymentModal');
 }
 
 // Modal de cliente
@@ -224,11 +417,74 @@ function clearSaleFields() {
     if (paymentDate) paymentDate.value = today;
 }
 
-// Modal de pagamento
-function openPaymentModal() {
-    openModal('paymentModal');
-    clearPaymentFields();
-    loadClients(); // Atualiza a lista antes de abrir
+function confirmPayment() {
+    // 1. Verifica se tem cliente selecionado
+    if (!currentPaymentClient) {
+        showNotification('Selecione um cliente primeiro!', 'error');
+        return;
+    }
+
+    // 2. Pega os valores dos NOVOS inputs
+    const valueInput = document.getElementById('payValueInput');
+    const dateInput = document.getElementById('payDateInput');
+    const methodInput = document.getElementById('payMethodInput');
+
+    const paymentValueStr = valueInput.value; // Ex: "100,00"
+    const paymentDate = dateInput.value;
+    const paymentMethod = methodInput.value;
+
+    // 3. Validação Básica
+    if (!paymentValueStr || !paymentDate || !paymentMethod) {
+        showNotification('Preencha todos os campos do pagamento.', 'error');
+        return;
+    }
+
+    // Converter valor para número (R$ 100,00 -> 100.00)
+    const paymentValue = parseFloat(paymentValueStr.replace(/\./g, '').replace(',', '.'));
+
+    if (isNaN(paymentValue) || paymentValue <= 0) {
+        showNotification('Digite um valor válido.', 'error');
+        return;
+    }
+
+    // 4. LÓGICA DE BAIXA (SIMPLIFICADA)
+    // Aqui vamos "fingir" que pagou, atualizando o status das dívidas do cliente
+    // Na vida real, você enviaria isso para um backend.
+    
+    let remainingPayment = paymentValue;
+    let billsPaid = 0;
+
+    // Percorre as dívidas pendentes e vai pagando
+    currentPaymentClient.debts.forEach(debt => {
+        if (debt.status === 'pendente' && remainingPayment > 0) {
+            if (remainingPayment >= debt.value) {
+                // Paga a conta inteira
+                debt.status = 'pago';
+                remainingPayment -= debt.value;
+                billsPaid++;
+            } else {
+                // Pagamento parcial (opcional: criar lógica de saldo restante)
+                // Por enquanto, vamos apenas avisar
+                console.log(`Pagamento parcial na conta ${debt.description}`);
+            }
+        }
+    });
+
+    // 5. Feedback e Fechamento
+    console.log('Pagamento Salvo:', {
+        cliente: currentPaymentClient.name,
+        valor: paymentValue,
+        data: paymentDate,
+        metodo: paymentMethod
+    });
+
+    showNotification(`Pagamento de R$ ${paymentValueStr} registrado com sucesso!`);
+    
+    // Fecha o modal
+    closePaymentModal();
+    
+    // Opcional: Recarregar a lista se o modal for reaberto
+    // (A variável currentPaymentClient será limpa no openPaymentModal)
 }
 
 function closePaymentModal() {

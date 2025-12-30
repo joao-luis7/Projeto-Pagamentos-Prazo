@@ -34,7 +34,7 @@
     max-width: 600px;
     height: auto; /* Altura automática ajustável ao conteúdo */
     max-height: 90vh; /* Se a tela for pequena, permite scroll */
-    overflow-y: auto; /* Scroll se necessário */
+    overflow-y: visible; /* Scroll se necessário */
     
     background: #D9D9D9;
     border-radius: 20px;
@@ -49,8 +49,308 @@
     transform: scale(0.9);
     transition: transform 0.2s ease;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: all 0.3s ease; /*animação ao crescer*/
 }
 
+/* --- ESTILOS ESPECÍFICOS DO NOVO MODAL DE PAGAMENTO --- */
+
+/* 1. O Container Elástico */
+.payment-container {
+    width: 875px;
+    max-width: 95vw;
+    min-height: 324px;
+    height: auto;
+    border-radius: 25px;
+    align-items: center;
+}
+
+.payment-header{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.moldal-title {
+    font-family: 'Content', sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    color: #2E2E2E;
+    margin-bottom: 5px;
+}
+
+.modal-subtitle {
+    font-family: 'Content', sans-serif;
+    font-size: 20px;
+    color: #2E2E2E;
+}
+/* 2. O Dropdown Customizado (Trigger) */
+.custom-select-wrapper {
+    position: relative;
+    width: 691px;
+    min-height: 53px;
+    z-index: 100;
+}
+
+.payment-container.expanded .custom-select-wrapper{
+    height: 70px;
+}
+
+.custom-select-trigger {
+    width: 100%;
+    height: 100%;
+    background: #D9D9D9;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    cursor: pointer;
+    position: relative;
+}
+
+.custom-select-trigger span {
+    font-family: 'Content', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #2E2E2E;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    background-color: #2E2E2E;
+    /* Ícone de seta SVG via mask */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
+    transform: translateY(-50%) rotate(-180deg); /* Começa pra baixo */
+    transition: transform 0.2s;
+}
+
+/* Tag de Preço no Header (Tela 3) */
+.debt-tag-large {
+    background: #AF1E1E;
+    border-radius: 15px;
+    padding: 5px 15px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-left: auto; /* Empurra pra direita */
+    margin-right: 40px; /* Espaço da seta */
+}
+
+/* 3. A Lista de Opções (Dropdown Aberto - Tela 2) */
+.custom-options {
+    display: none;
+    position: absolute;
+    /* Ajuste fino: 100% cola na base + 10px de respiro */
+    top: 100%; 
+    margin-top: 5px;
+    left: 0;
+    width: 100%; /* Garante que tenha a mesma largura do botão */
+    
+    background: #D9D9D9;
+    /* Sombra mais forte para dar efeito de profundidade 3D */
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.4); 
+    border-radius: 19px;
+    padding: 10px; /* Reduzi um pouco o padding interno */
+    z-index: 9999; /* Garante que fique na frente de tudo */
+    
+    /* Garante que se a LISTA for gigante, ELA tenha scroll, não o modal */
+    max-height: 300px; 
+    overflow-y: auto;
+}
+
+.custom-option {
+    position: relative;
+    width: 100%;
+    height: 58px;
+    background: #D9D9D9;
+    border: 1px solid #5F5F5F;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    transition: background 0.2s;
+}
+
+.custom-option:hover {
+    background: #e6e6e6;
+}
+
+.client-name {
+    font-family: 'Content', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000000;
+}
+.debt-tag {
+    position: absolute;
+    right: 20px;
+    background: #C70404;
+    border-radius: 17px;
+    padding: 6px 15px;
+    color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+/* 4. Área de Detalhes (Tela 3) */
+.payment-details {
+    width: 691px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+.payment-details.hidden {
+    display: none;
+    opacity: 0;
+}
+/* Lista de Débitos (Scrollável) */
+.debts-list-container {
+    width: 100%;
+    max-height: 310px; /* Altura fixa aproximada do Figma */
+    overflow-y: auto;
+    border: 1px solid #5F5F5F;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 15px;
+    background: #D9D9D9;
+}
+.debt-item {
+    width: 100%;
+    height: 115px;
+    background: #D9D9D9;
+    border: 1px solid #5F5F5F;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.debt-title {
+    font-family: 'Content', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000;
+    margin-bottom: 5px;
+}
+.debt-dates {
+    font-family: 'Content', sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.debt-value {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 5px;
+    text-align: right;
+}
+.tag-pending {
+    background: #AF1E1E;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+}
+.tag-paid {
+    background: #1C7B07;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+}
+/* 5. Inputs do Rodapé */
+.payment-footer-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.footer-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+.footer-input-group label {
+    font-family: 'Content', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000;
+}
+
+.input-box {
+    height: 40px;
+    border: 1px solid #5F5F5F;
+    background: #D9D9D9;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+.input-box input, .input-box select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+.input-helper {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: #2E2E2E;
+}
+
+/* 6. Botões Finais */
+.payment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 10px;
+}
+.btn-confirm {
+    width: 203px;
+    height: 40px;
+    background: #1C7B07;
+    border-radius: 19px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
+.btn-cancel {
+    width: 118px;
+    height: 40px;
+    background: #2E2E2E;
+    border-radius: 19px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
 .modal-overlay.show .modal-container {
     transform: scale(1);
 }

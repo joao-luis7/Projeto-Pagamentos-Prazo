@@ -120,18 +120,6 @@ function validateSaleFields() {
     return { linkedClient, saleDate, saleProducts, saleValue, paymentDate };
 }
 
-function validatePaymentFields() {
-    const linkedClient = document.getElementById('paymentLinkedClient')?.value;
-    const paymentValue = document.getElementById('paymentValue')?.value.trim();
-    const paymentMethod = document.getElementById('paymentMethod')?.value;
-
-    if (!linkedClient || !paymentValue || !paymentMethod) {
-        showNotification('Preencha todos os campos obrigatórios', 'error');
-        return false;
-    }
-    
-    return { linkedClient, paymentValue, paymentMethod };
-}
 
 // --- LÓGICA DOS BOTÕES ATUALIZADA ---
 
@@ -186,14 +174,6 @@ function confirmSale() {
     closeSaleModal();
 }
 
-function confirmPayment() {
-    const paymentData = validatePaymentFields();
-    if (!paymentData) return;
-
-    console.log('Registrando pagamento:', paymentData);
-    showNotification('Pagamento registrado com sucesso!');
-    closePaymentModal();
-}
 
 function handleMenuClick(option) {
     if (option === 'Registrar Pagamento') {
