@@ -254,7 +254,7 @@ function renderCustomOptions() {
 }
 
 function selectPaymentClient(client) {
-    // 1. SALVAR O CLIENTE NA VARIÁVEL GLOBAL (Isso é crucial para o 'Salvar' funcionar depois)
+    // 1. SALVAR O CLIENTE NA VARIÁVEL GLOBAL
     currentPaymentClient = client;
 
     // 2. Fecha o dropdown

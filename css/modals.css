@@ -33,8 +33,6 @@
     width: 100%;
     max-width: 600px;
     height: auto; /* Altura automática ajustável ao conteúdo */
-    max-height: 90vh; /* Se a tela for pequena, permite scroll */
-    overflow-y: visible; /* Scroll se necessário */
     
     background: #D9D9D9;
     border-radius: 20px;
@@ -50,6 +48,8 @@
     transition: transform 0.2s ease;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     transition: all 0.3s ease; /*animação ao crescer*/
+
+    padding-bottom: 40px;
 }
 
 /* --- ESTILOS ESPECÍFICOS DO NOVO MODAL DE PAGAMENTO --- */
@@ -58,15 +58,14 @@
 .payment-container {
     width: 875px;
     max-width: 95vw;
-    min-height: 324px;
     height: auto;
+    padding-bottom: 30px; 
     border-radius: 25px;
     align-items: center;
 }
-
 .payment-header{
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .moldal-title {
@@ -145,7 +144,8 @@
 /* 3. A Lista de Opções (Dropdown Aberto - Tela 2) */
 .custom-options {
     position: absolute;
-    top: calc(100% + 10px);
+    top: 100%;
+    margin-top: 5px;
     left: 0;
     width: 100%; /* Garante que tenha a mesma largura do botão */
     background: #D9D9D9;
@@ -164,7 +164,7 @@
 }
 
 .custom-options.open {
-    max-height: 320px; /* espaço para o conteúdo */
+    max-height: 230px; /* espaço para o conteúdo */
     overflow-y: auto;
     opacity: 1;
     transform: translateY(0);
@@ -214,6 +214,7 @@
 /* 4. Área de Detalhes (Tela 3) */
 .payment-details {
     width: 691px;
+    max-width: 100;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -228,23 +229,28 @@
 /* Lista de Débitos (Scrollável) */
 .debts-list-container {
     width: 100%;
-    max-height: 310px; /* Altura fixa aproximada do Figma */
+    max-height: 30vh; /* Altura fixa aproximada do Figma */
+    min-height: 100px;
     overflow-y: auto;
     border: 1px solid #5F5F5F;
     box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     padding: 15px;
     background: #D9D9D9;
+
+    flex-shrink: 0;
 }
 .debt-item {
     width: 100%;
-    height: 115px;
+    height: auto;
+    min-height: 80px;
     background: #D9D9D9;
     border: 1px solid #5F5F5F;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
     border-radius: 10px;
     margin-bottom: 15px;
     padding: 15px 20px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -254,14 +260,20 @@
     font-weight: 700;
     font-size: 16px;
     color: #000;
-    margin-bottom: 5px;
+    margin: 0;
 }
 .debt-dates {
     font-family: 'Content', sans-serif;
     font-size: 14px;
     color: #000;
 }
-
+.debt-values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Alinha tudo à direita */
+    justify-content: center;
+    gap: 5px;
+}
 .debt-value {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -419,14 +431,12 @@
 }
 
 .debt-info {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-weight: 700;
-    font-size: 14px; /* Reduzido de 18px */
-    color: #2E2E2E;
-    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    text-align: left;
 }
 
 .form-field-label {
