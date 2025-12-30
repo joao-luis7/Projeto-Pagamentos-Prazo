@@ -1,0 +1,291 @@
+/* css/modals.css */
+
+/* MODALS BASE */
+.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(59, 59, 59, 0.42);
+    z-index: 1000;
+    
+    /* Centralização com Flexbox (substitui cálculos manuais) */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    padding: 20px; /* Garante espaço em telas pequenas */
+}
+
+.modal-overlay.show {
+    display: flex; /* Mudamos de block para flex para centralizar */
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    position: relative;
+    /* Reduzimos a largura de 875px para 600px (~30% menor) */
+    width: 100%;
+    max-width: 600px;
+    height: auto; /* Altura automática ajustável ao conteúdo */
+    max-height: 90vh; /* Se a tela for pequena, permite scroll */
+    overflow-y: auto; /* Scroll se necessário */
+    
+    background: #D9D9D9;
+    border-radius: 20px;
+    padding: 30px 40px; /* Espaçamento interno */
+    
+    /* Organização interna em coluna */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaço entre os campos */
+    
+    transform: scale(0.9);
+    transition: transform 0.2s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-overlay.show .modal-container {
+    transform: scale(1);
+}
+
+.modal-title {
+    position: relative; /* Removemos absolute */
+    width: 100%;
+    height: auto;
+    left: auto; top: auto;
+    
+    font-weight: 700;
+    font-size: 28px; /* Reduzido de 38px */
+    line-height: 1.2;
+    color: #2E2E2E;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+/* FORM FIELDS */
+.form-field {
+    position: relative; /* Empilha naturalmente */
+    width: 100%;
+    /* Reduzimos altura de 64px para 50px */
+    height: 50px; 
+    left: auto; top: auto;
+    margin-bottom: 5px;
+}
+
+/* Classes específicas de posição não são mais necessárias 
+   pois o flexbox cuida da ordem, mas mantemos para referência se precisar */
+.form-field.nome, .form-field.telefone, .form-field.endereco,
+.form-field.cliente-vinculado, .form-field.data, .form-field.produtos,
+.form-field.valor-total, .form-field.pagamento, .form-field.valor-pago,
+.form-field.forma-pagamento {
+    top: auto; left: auto;
+}
+
+.form-field.expanded {
+    height: 100px; /* Reduzido de 116px */
+}
+
+.form-field-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #D9D9D9;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px; /* Arredondamento proporcional */
+}
+
+.form-field-bg.expanded {
+    height: 100%;
+}
+
+.debt-info {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    font-size: 14px; /* Reduzido de 18px */
+    color: #2E2E2E;
+    z-index: 1;
+}
+
+.form-field-label {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-weight: 700;
+    font-size: 15px; /* Tamanho normal quando vazio */
+    color: #2E2E2E;
+    
+    z-index: 1;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    opacity: 1;
+}
+
+.form-field-note {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 9px;
+    color: #2E2E2E;
+    z-index: 1;
+}
+
+.form-field-input,
+.form-field-select {
+    position: absolute;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    
+    /* Texto digitado em baixo, preto e mais forte */
+    font-size: 16px;
+    color: #2E2E2E;
+    font-weight: 400;
+    padding-top: 26px; 
+    padding-bottom: 0;
+    
+    z-index: 2;
+    appearance: none;
+}
+
+.form-field-input::placeholder {
+    color: transparent;
+}
+
+.form-field-select {
+    cursor: pointer;
+}
+
+/* --- RÓTULO (LABEL) EM REPOUSO --- */
+.form-field-label {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    /* Configuração padrão */
+    font-weight: 500;
+    font-size: 15px;
+    color: #2E2E2E;
+    
+    z-index: 1;
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+/* --- RÓTULO (LABEL) FLUTUANTE (ATIVO) --- */
+/* O CSS detecta sozinho quando foca ou tem texto */
+.form-field-input:focus + .form-field-label,
+.form-field-input:not(:placeholder-shown) + .form-field-label,
+.form-field-select:focus + .form-field-label,
+.form-field-select:not([value=""]) + .form-field-label {
+    /* Sobe e diminui */
+    transform: translateY(-14px);
+    font-size: 11px;
+    opacity: 0.7;
+    color: #2E2E2E;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-180deg);
+    width: 20px;
+    height: 20px;
+    background: #2E2E2E;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232E2E2E' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232E2E2E' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
+    z-index: 1;
+}
+
+/* BUTTONS */
+.modal-btn {
+    position: relative; /* Flexbox empilha */
+    width: 100%;
+    height: 50px; /* Reduzido de 64px */
+    left: auto; top: auto;
+    
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+.modal-btn.primary {
+    background: #1C7B07;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-top: 20px; /* Separação extra do formulário */
+}
+
+.modal-btn.secondary {
+    background: #D6D6D6;
+    box-shadow: none;
+    margin-top: 0; /* Cola no botão de cima */
+    background: transparent; /* Opcional: estilo link */
+    border: 1px solid #ccc;
+}
+
+.modal-btn.sale-confirm, .modal-btn.payment-confirm {
+    width: 100%; /* Ocupa largura total agora */
+    max-width: 250px; /* Mas não fica gigante */
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn-text.primary {
+    font-weight: 700;
+    font-size: 16px; /* Reduzido de 22px */
+    color: #FFFFFF;
+}
+
+.modal-btn-text.secondary {
+    font-weight: 700;
+    font-size: 14px; /* Reduzido de 20px */
+    color: #2E2E2E;
+}
+
+.modal-btn-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #E6E6E6;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E6E6E6' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E6E6E6' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/* Lógica do Label de Pagamento */
+.form-field-select:not([value=""]) + .form-field-label.payment-client {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.form-field-select[value=""] + .form-field-label.payment-client {
+    opacity: 1;
+    visibility: visible;
+}

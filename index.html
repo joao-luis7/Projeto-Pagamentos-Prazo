@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modals.css">
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <!-- BARRA DE PESQUISA -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Buscar cliente" id="searchInput">
+                <div class="search-icon" onclick="performSearch()"></div>
+            </div>
+        </div>
+
+        <!-- AÇÕES RÁPIDAS -->
+<div class="acoes-rapidas">
+    <div class="acoes-titulo">Ações Rápidas</div>
+
+    <div class="menu-grid">
+        <button class="menu-item" onclick="openClientModal()">
+            <div class="menu-icon"></div>
+            <div class="menu-text">Cadastrar<br>Cliente</div>
+        </button>
+
+        <button class="menu-item" onclick="handleMenuClick('Registrar Pagamento')">
+            <div class="menu-icon">💵</div>
+            <div class="menu-text">Registrar<br>pagamento</div>
+        </button>
+
+        <button class="menu-item" onclick="openSaleModal()">
+            <div class="menu-icon">➕</div>
+            <div class="menu-text">Cadastrar<br>Venda</div>
+        </button>
+
+        <button class="menu-item" onclick="handleMenuClick('Enviar Lembrete')">
+            <div class="menu-icon">💬</div>
+            <div class="menu-text">Enviar<br>Lembrete</div>
+        </button>
+
+        <button class="menu-item" onclick="handleMenuClick('Todas as Opções')">
+            <div class="menu-icon">⚙️</div>
+            <div class="menu-text">Todas<br>opções</div>
+        </button>
+    </div>
+</div>
+
+
+        <!-- DASHBOARD -->
+        <div class="dashboard-section">
+            <div class="dashboard-titulo">Dashboard</div>
+            <div class="dashboard-subtitulo">Uma visão geral do seu negócio.</div>
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="card-titulo">Total a receber</div>
+                    <div class="card-valor">R$ 0,00</div>
+                    <div class="card-icone"></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-titulo">Vendas pendentes</div>
+                    <div class="card-valor">0</div>
+                    <div class="card-subtitulo">aguardando pagamento</div>
+                    <div class="card-icone"></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-titulo">Total de vendas</div>
+                    <div class="card-valor">0</div>
+                    <div class="card-subtitulo">cadastradas</div>
+                    <div class="card-icone"></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-titulo">Clientes ativos</div>
+                    <div class="card-valor">0</div>
+                    <div class="card-subtitulo">cadastrados</div>
+                    <div class="card-icone"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="clientModal" class="modal-overlay"></div>
+    <div id="saleModal" class="modal-overlay"></div>
+    <div id="paymentModal" class="modal-overlay"></div>
+    <div class="notification" id="notification"></div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

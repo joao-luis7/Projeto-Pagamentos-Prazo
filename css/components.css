@@ -1,0 +1,233 @@
+/* --- BARRA DE PESQUISA --- */
+.search-container {
+    /* Removemos position absolute/top/left */
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.search-box {
+    position: relative;
+    width: 100%;
+    height: 40px;
+}
+
+.search-input {
+    position: relative;
+    width: 100%;
+    height: 45px;
+    background: #D6D6D6;
+    box-shadow: -6px -2px 15.6px #F4F4F4, 1px 6px 4.5px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 45px;
+    border: none;
+    outline: none;
+    font-family: 'Content';
+    font-size: 13px;
+    color: #5F5F5F;
+    padding-left: 20px;
+    padding-top: 13px;
+}
+
+.search-input::placeholder {
+    color: #5F5F5F;
+}
+
+.search-icon {
+    position: absolute;
+    width: 30px; 
+    height: 30px;
+    
+    right: 20px; /* Cola na direita */
+    top: 50%;    /* Desce até a metade */
+    transform: translateY(-50%); /* Puxa um pouco pra cima para centralizar exato */
+    
+    cursor: pointer;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235F5F5F' d='M9.539 15.23q-2.398 0-4.065-1.666Q3.808 11.899 3.808 9.5t1.666-4.065T9.539 3.77t4.064 1.666T15.269 9.5q0 1.042-.369 2.017t-.97 1.668l5.909 5.907q.14.14.15.345q.009.203-.15.363q-.16.16-.354.16t-.354-.16l-5.908-5.908q-.75.639-1.725.989t-1.96.35m0-1q1.99 0 3.361-1.37q1.37-1.37 1.37-3.361T12.9 6.14T9.54 4.77q-1.991 0-3.361 1.37T4.808 9.5t1.37 3.36t3.36 1.37'/%3E%3C/svg%3E") no-repeat center;
+    background-size: 100% 100%;
+    z-index: 10; /* Garante que fique acima do input */
+}
+
+/* AÇÕES RÁPIDAS */
+.acoes-rapidas {
+/* Auto height permite que ele cresça conforme o conteúdo */
+    height: auto;
+    min-height: 200px; /* Altura mínima para não ficar "magro" demais se vazio */
+    
+    position: relative;
+    width: 80%;
+    max-width: 900px; /* Limite de largura */
+    background: #D9D9D9;
+    border-radius: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    
+    /* Layout Flex para organizar Título em cima e Botões embaixo */
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px; /* Espaço interno geral */
+    margin-top: 20px;
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+.acoes-titulo {
+    font-weight: 700;
+    font-size: 22px;
+    color: #2E2E2E;
+    margin-bottom: 15px; /* Empurra os botões para baixo */
+}
+
+.menu-grid {
+    display: flex;
+    justify-content: space-between; /* Distribui os botões uniformemente */
+    flex-wrap: wrap; /* Permite cair para a linha de baixo se faltar espaço */
+    gap: 15px; /* Espaço entre os botões */
+    width: 100%;
+}
+
+.menu-item {
+    /* Flex grow faz o botão tentar preencher o espaço vazio */
+    flex: 1 1 110px; 
+    
+    /* Tamanhos limites */
+    min-width: 110px;
+    max-width: 140px; /* Impede que fiquem gigantescos em telas wide */
+    height: 120px;
+    
+    background: #1C7B07;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.menu-text {
+    width: 122px;
+    height: 20px;
+    font-size: 13px;
+    line-height: 120%;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.menu-icon {
+    width: 20px;
+    height: 20px;
+    transform: scale(0.9);
+    background-color: #E6E6E6;
+}
+
+.client-icon {
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/* DASHBOARD */
+.dashboard-section {
+    /* Removemos position absolute para ele fluir na página */
+    position: relative;
+    
+    /* Largura fluida com limite máximo */
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    
+    /* Espaçamento: 40px do topo (afasta do menu), auto nas laterais (centraliza se sobrar espaço) */
+    margin: 20px 0; 
+    padding: 0 10px; /* Margem de segurança para mobile */
+    
+    /* Flex para alinhar textos */
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-titulo {
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.2;
+    color: #2E2E2E;
+    margin-bottom: 5px;
+}
+
+.dashboard-subtitulo {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #2E2E2E;
+    margin-bottom: 20px; /* Espaço entre o subtítulo e os cards */
+}
+
+/* Onde a mágica acontece: Container dos Cards */
+.dashboard-cards {
+    position: static; /* Remove absolute */
+    width: 100%;
+    height: auto;
+    
+    /* GRID RESPONSIVO */
+    display: grid;
+    /* Cria colunas automáticas que têm no MÍNIMO 220px e no MÁXIMO 1 fração do espaço */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px; /* Espaço entre os cards */
+}
+
+.dashboard-card {
+    position: relative;
+    width: 100%;
+    /* MUDANÇA: Reduzido de 130px para 100px */
+    height: 100px; 
+    background: #D6D6D6;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px); /* Efeito visual ao passar o mouse */
+}
+
+/* Mantemos o conteúdo interno do card como absolute por enquanto, 
+   pois o card tem altura fixa e funciona bem assim */
+.card-titulo {
+    position: absolute;
+    left: 18px;
+    top: 12px; /* Subiu um pouquinho */
+    font-size: 15px;
+    color: #2E2E2E;
+}
+
+.card-valor {
+    position: absolute;
+    left: 18px;
+    top: 38px; /* Centralizado melhor na nova altura */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #2E2E2E;
+}
+
+.card-subtitulo {
+    position: absolute;
+    left: 18px;
+    bottom: 10px; /* Ajuste fino */
+    font-size: 11px;
+    color: #2E2E2E;
+}
+
+.card-icone {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 18px;
+    top: 12px; /* Alinhado com o título */
+    background: #2E2E2E;
+    opacity: 0.1;
+}
