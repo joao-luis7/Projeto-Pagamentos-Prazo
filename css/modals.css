@@ -54,14 +54,17 @@
 
 /* --- ESTILOS ESPECÍFICOS DO NOVO MODAL DE PAGAMENTO --- */
 
-/* 1. O Container Elástico */
+/* 1. Ajuste do Container Principal */
 .payment-container {
-    width: 875px;
-    max-width: 95vw;
+    /* REMOVA: width: 875px; */
+    width: 95%; /* Ocupa 95% da tela em vez de fixo */
+    max-width: 800px; /* Limite máximo para desktop */
     height: auto;
     padding-bottom: 30px; 
     border-radius: 25px;
     align-items: center;
+    /* Adicionado para garantir que o padding não estoure a largura */
+    box-sizing: border-box; 
 }
 .payment-header{
     text-align: center;
@@ -84,7 +87,8 @@
 /* 2. O Dropdown Customizado (Trigger) */
 .custom-select-wrapper {
     position: relative;
-    width: 691px;
+    width: 100%;
+    max-width: 100%;
     min-height: 53px;
     z-index: 100;
 }
@@ -102,12 +106,13 @@
     border-radius: 10px;
     display: flex;
     align-items: center;
-    padding: 0 30px;
+    padding: 0 15px;
     cursor: pointer;
     position: relative;
 }
 
 .custom-select-trigger span {
+    max-width: 70%; /* Dá espaço para a seta e a tag de valor */
     font-family: 'Content', sans-serif;
     font-weight: 700;
     font-size: 18px;
@@ -136,9 +141,9 @@
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     margin-left: auto; /* Empurra pra direita */
-    margin-right: 40px; /* Espaço da seta */
+    margin-right: 30px; /* Espaço da seta */
 }
 
 /* 3. A Lista de Opções (Dropdown Aberto - Tela 2) */
@@ -213,8 +218,8 @@
 }
 /* 4. Área de Detalhes (Tela 3) */
 .payment-details {
-    width: 691px;
-    max-width: 100;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -305,14 +310,16 @@
 .payment-footer-inputs {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .footer-input-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    flex: 1;
+    flex: 1; 
+    min-width: 140px; /* Mínimo antes de quebrar */
 }
 .footer-input-group label {
     font-family: 'Content', sans-serif;
@@ -348,8 +355,9 @@
 .payment-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 10px;
     margin-top: 10px;
+    flex-wrap: wrap; /* Permite quebrar linha se necessário */
 }
 .btn-confirm {
     width: 203px;
@@ -610,4 +618,38 @@
 .form-field-select[value=""] + .form-field-label.payment-client {
     opacity: 1;
     visibility: visible;
+}
+
+/* --- MEDIA QUERY ESPECÍFICA PARA CELULARES --- */
+@media (max-width: 480px) {
+    .modal-container {
+        padding: 20px 15px; /* Menos padding lateral */
+    }
+
+    .moldal-title {
+        font-size: 24px; /* Título menor */
+    }
+    
+    .modal-subtitle {
+        font-size: 14px;
+    }
+
+    /* Esconde a tag de valor grande no topo se a tela for muito pequena */
+    .debt-tag-large {
+        display: none; 
+    }
+    
+    /* Ajusta lista de débitos */
+    .debt-item {
+        flex-direction: column; /* Empilha info e valor */
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .debt-values {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
