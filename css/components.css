@@ -139,6 +139,46 @@
     background-color: transparent !important; 
 }
 
+.payment-icon {
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url('../img/payment-icon.svg');
+    background-color: transparent !important;
+}
+
+.sale-icon {
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url('../img/sale-icon.svg');
+    background-color: transparent !important;
+}
+
+.reminder-icon {
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url('../img/reminder-icon.svg');
+    background-color: transparent !important;
+}
+
+.all-options-icon {
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url('../img/all-options-icon.svg');
+    background-color: transparent !important;
+}
+
 /* DASHBOARD */
 .dashboard-section {
     /* Removemos position absolute para ele fluir na página */
