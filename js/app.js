@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Garantir que modais estejam ocultos
     hideAllModals();
+
+    // Atualizar dashboard com dados iniciais
+    updateDashboard();
 });
 
 function hideAllModals() {
@@ -117,7 +120,34 @@ function validateSaleFields() {
         return false;
     }
     
+    // Validar valor
+    const valueNumber = parseMoneyToNumber(saleValue);
+    if (valueNumber <= 0) {
+        showNotification('Valor da venda deve ser maior que zero', 'error');
+        return false;
+    }
+    
     return { linkedClient, saleDate, saleProducts, saleValue, paymentDate };
+}
+
+function validatePaymentFields() {
+    const linkedClient = document.getElementById('paymentLinkedClient')?.value;
+    const paymentValue = document.getElementById('paymentValue')?.value.trim();
+    const paymentMethod = document.getElementById('paymentMethod')?.value;
+
+    if (!linkedClient || !paymentValue || !paymentMethod) {
+        showNotification('Preencha todos os campos obrigatórios', 'error');
+        return false;
+    }
+    
+    // Validar valor
+    const valueNumber = parseMoneyToNumber(paymentValue);
+    if (valueNumber <= 0) {
+        showNotification('Valor do pagamento deve ser maior que zero', 'error');
+        return false;
+    }
+    
+    return { linkedClient, paymentValue, paymentMethod };
 }
 
 
@@ -165,13 +195,59 @@ function registerOnly() {
     closeClientModal();
 }
 
+/* Confirma registro de venda */
 function confirmSale() {
     const saleData = validateSaleFields();
     if (!saleData) return;
 
-    console.log('Registrando venda:', saleData);
-    showNotification('Venda registrada com sucesso!');
-    closeSaleModal();
+    // Busca nome do cliente
+    const client = window.clientsList.find(c => c.id === parseInt(saleData.linkedClient));
+    if (!client) {
+        showNotification('Cliente não encontrado!', 'error');
+        return;
+    }
+
+    // Registra a venda
+    const newSale = addNewSale(
+        saleData.linkedClient,
+        client.name,
+        saleData.saleDate,
+        saleData.paymentDate,
+        saleData.saleProducts,
+        saleData.saleValue
+    );
+
+    if (newSale) {
+        const valueFormatted = formatCurrency(newSale.totalValue);
+        showNotification(`Venda de ${valueFormatted} registrada para ${client.name}!`);
+        closeSaleModal();
+    }
+}
+
+
+/* Confirma registro de pagamento (COM LÓGICA FIFO) */
+function confirmPayment() {
+    const paymentData = validatePaymentFields();
+    if (!paymentData) return;
+
+    // Busca nome do cliente
+    const client = window.clientsList.find(c => c.id === parseInt(paymentData.linkedClient));
+    if (!client) {
+        showNotification('Cliente não encontrado!', 'error');
+        return;
+    }
+
+    // Registra o pagamento (a função já mostra o feedback detalhado)
+    const newPayment = addNewPayment(
+        paymentData.linkedClient,
+        client.name,
+        paymentData.paymentValue,
+        paymentData.paymentMethod
+    );
+
+    if (newPayment) {
+        closePaymentModal();
+    }
 }
 
 
@@ -183,13 +259,42 @@ function handleMenuClick(option) {
     }
 }
 
+/*Busca de clientes */
 function performSearch() {
     const searchInput = document.getElementById('searchInput');
-    const searchTerm = searchInput?.value.trim();
+    const searchTerm = searchInput?.value.trim().toLowerCase();
     
-    if (searchTerm) {
-        showNotification(`Buscando por: ${searchTerm}`);
-    } else {
+    if (!searchTerm) {
         showNotification('Digite algo para buscar', 'error');
+        return;
     }
+    
+    // Busca clientes
+    const foundClients = window.clientsList.filter(client => 
+        client.name.toLowerCase().includes(searchTerm) ||
+        client.phone.includes(searchTerm)
+    );
+    
+    if (foundClients.length === 0) {
+        showNotification(`Nenhum cliente encontrado para "${searchTerm}"`, 'error');
+        return;
+    }
+    
+    // Busca vendas desses clientes
+    const clientIds = foundClients.map(c => c.id);
+    const clientSales = window.salesList.filter(sale => clientIds.includes(sale.clientId));
+    
+    // Monta mensagem
+    let message = `Encontrado(s) ${foundClients.length} cliente(s):\n\n`;
+    
+    foundClients.forEach(client => {
+        const debt = calculateClientDebt(client.id);
+        const sales = clientSales.filter(s => s.clientId === client.id).length;
+        message += `• ${client.name}\n`;
+        message += `  ${client.phone}\n`;
+        message += `  ${sales} venda(s) | Dívida: ${formatCurrency(debt)}\n\n`;
+    });
+    
+    showNotification(message);
+    console.log('🔍 Resultado da busca:', foundClients);
 }
