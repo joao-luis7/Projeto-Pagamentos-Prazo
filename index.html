@@ -15,9 +15,11 @@
 
     <div class="app-layout">
         
-        <aside class="sidebar">
+        <aside class="sidebar" id="appSidebar">
             <div class="sidebar-header">
-                <svg width="47" height="47" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <div class="menu-trigger" onclick="toggleSidebar()">
+                    <svg width="47" height="47" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </div>
             </div>
 
             <nav class="sidebar-nav">
@@ -61,6 +63,10 @@
         <main class="main-content" id="mainContainer">
             
             <header class="top-header">
+                <div class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </div>
+
                 <div class="search-container">
                     <div class="search-box">
                         <input type="text" class="search-input" placeholder="Buscar cliente" id="searchInput">
@@ -154,47 +160,19 @@
                 <div class="panel-container">
                     <h3 class="panel-title">Últimas Movimentações</h3>
                     <div class="movements-list">
-                        <div class="movement-item">
-                            <div class="movement-info">
-                                <div class="mov-name">João Lucas</div>
-                                <div class="mov-type">Pagamento</div>
-                                <div class="mov-time">há 2 minutos</div>
-                            </div>
-                            <div class="mov-badge green">
-                                <span>Pagamento Recebido</span>
-                                <strong>R$ 60,00</strong>
-                            </div>
                         </div>
-                        <div class="movement-item">
-                            <div class="movement-info">
-                                <div class="mov-name">Vitor Souza</div>
-                                <div class="mov-type">Lembrete</div>
-                                <div class="mov-time">há 5 minutos</div>
-                            </div>
-                            <div class="mov-badge blue">
-                                <span>Lembrete referido à</span>
-                                <strong>R$ 90,00</strong>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="panel-container">
                     <h3 class="panel-title">Maiores Devedores</h3>
                     <div class="debtors-list">
-                        <div class="debtor-item">
-                            <div class="debtor-rank">1º</div>
-                            <div class="debtor-info">
-                                <div class="debtor-name">João Lucas</div>
-                                <div class="debtor-status">2 meses atrasado</div>
-                            </div>
-                            <div class="debtor-badge red">R$ 60,00</div>
                         </div>
-                    </div>
                 </div>
             </section>
         </main>
     </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <div id="clientModal" class="modal-overlay"></div>
     <div id="saleModal" class="modal-overlay"></div>

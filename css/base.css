@@ -10,21 +10,20 @@
 body {
     background: #D6D6D6;
     height: 100vh;
-    overflow: hidden; /* Evita scroll na janela principal */
-    /* REMOVIDO: O transform não fica mais aqui */
+    overflow: hidden; /* Scroll gerido pelo conteúdo principal no desktop */
 }
 
-/* LAYOUT PRINCIPAL */
+/* LAYOUT PRINCIPAL (DESKTOP) */
 .app-layout {
     display: flex;
     width: 100%;
     height: 100%;
     
-    /* --- EFEITO DE ZOOM APLICADO AQUI --- */
+    /* ZOOM DESKTOP (85%) */
     transform: scale(0.85);
     transform-origin: top left;
     
-    /* Compensa o tamanho para preencher a tela (100 / 0.85 = ~117.65%) */
+    /* Compensa o tamanho para preencher a tela */
     width: 117.65%;
     height: 117.65%;
 }
@@ -39,6 +38,7 @@ body {
     flex-direction: column;
     padding: 40px 20px;
     z-index: 100;
+    transition: transform 0.3s ease; /* Animação suave */
 }
 
 .sidebar-header {
@@ -48,6 +48,12 @@ body {
     justify-content: flex-end;
     padding-right: 20px;
     margin-bottom: 40px;
+}
+
+/* Botão de fechar (dentro do menu) - Escondido no Desktop */
+.menu-trigger {
+    display: none; 
+    cursor: pointer;
 }
 
 .sidebar-nav {
@@ -119,6 +125,30 @@ body {
     border-radius: 4px;
 }
 
+/* --- HEADER SUPERIOR --- */
+/* Botão Menu Mobile (Hamburguer) - Escondido no Desktop */
+.mobile-menu-btn {
+    display: none;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* --- OVERLAY DO MENU MOBILE --- */
+.sidebar-overlay {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 900;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
 /* NOTIFICAÇÕES */
 .notification {
     position: fixed;
@@ -136,3 +166,95 @@ body {
 }
 .notification.show { opacity: 1; transform: translateX(0); }
 .notification.error { background: #f44336; }
+
+
+/* ==========================================================================
+   RESPONSIVIDADE (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+    
+    body {
+        overflow: auto; /* Permite scroll natural no mobile */
+    }
+
+    /* Removemos o zoom no mobile */
+    .app-layout {
+        transform: none;
+        width: 100%;
+        height: auto;
+        display: block; 
+    }
+
+    /* --- CORREÇÃO DO HEADER MOBILE --- */
+    .top-header {
+        display: flex; /* Garante layout em linha */
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px; /* Espaço seguro entre os itens */
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        flex-shrink: 0; /* Impede que o botão amasse */
+    }
+
+    .search-container {
+        flex: 1; /* A busca ocupa APENAS o espaço disponível no meio */
+        width: auto; /* Reseta larguras fixas */
+        margin: 0;
+    }
+    
+    /* Esta classe tinha position: absolute no CSS de componentes. 
+       Aqui resetamos para static para ela entrar no fluxo e não sobrepor a busca */
+    .header-actions {
+        position: static;
+        transform: none;
+        flex-shrink: 0; /* Impede que o sino amasse */
+    }
+
+    /* --- FIM DA CORREÇÃO --- */
+
+    /* Menu Lateral Mobile */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .menu-trigger {
+        display: block;
+        margin-right: auto;
+    }
+    
+    .sidebar-header {
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    /* Conteúdo Principal Mobile */
+    .main-content {
+        width: 100%;
+        padding: 20px 15px;
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bottom-section {
+        flex-direction: column;
+    }
+}
