@@ -289,5 +289,3 @@ function toggleSidebar() {
         overlay.classList.toggle('show');
     }
 }
-
-//teste branch
