@@ -1,280 +1,302 @@
-/* --- BARRA DE PESQUISA --- */
-.search-container {
-    /* Removemos position absolute/top/left */
-    width: 100%;
-    max-width: 600px;
+/* css/components.css */
+
+/* --- HEADER & SEARCH --- */
+.top-header {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-}
-.search-box {
+    align-items: center;
     position: relative;
-    width: 100%;
-    height: 40px;
+    margin-bottom: 20px;
 }
 
-.search-input {
-    position: relative;
+.search-container {
     width: 100%;
-    height: 45px;
+    max-width: 750px;
+    position: relative;
+}
+
+.search-box {
+    width: 100%;
+    height: 52px;
     background: #D6D6D6;
     box-shadow: -6px -2px 15.6px #F4F4F4, 1px 6px 4.5px 2px rgba(0, 0, 0, 0.25);
     border-radius: 45px;
-    border: none;
-    outline: none;
-    font-family: 'Content';
-    font-size: 13px;
-    color: #5F5F5F;
-    padding-left: 20px;
-    padding-top: 13px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
 }
 
-.search-input::placeholder {
-    color: #5F5F5F;
-}
-
+/* Ícone na direita, como no design original e clicável */
 .search-icon {
     position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 30px; 
     height: 30px;
-    
-    right: 20px; /* Cola na direita */
-    top: 50%;    /* Desce até a metade */
-    transform: translateY(-50%); /* Puxa um pouco pra cima para centralizar exato */
-    
     cursor: pointer;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%235F5F5F' d='M9.539 15.23q-2.398 0-4.065-1.666Q3.808 11.899 3.808 9.5t1.666-4.065T9.539 3.77t4.064 1.666T15.269 9.5q0 1.042-.369 2.017t-.97 1.668l5.909 5.907q.14.14.15.345q.009.203-.15.363q-.16.16-.354.16t-.354-.16l-5.908-5.908q-.75.639-1.725.989t-1.96.35m0-1q1.99 0 3.361-1.37q1.37-1.37 1.37-3.361T12.9 6.14T9.54 4.77q-1.991 0-3.361 1.37T4.808 9.5t1.37 3.36t3.36 1.37'/%3E%3C/svg%3E") no-repeat center;
-    background-size: 100% 100%;
-    z-index: 10; /* Garante que fique acima do input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-/* AÇÕES RÁPIDAS */
-.acoes-rapidas {
-/* Auto height permite que ele cresça conforme o conteúdo */
-    height: auto;
-    min-height: 200px; /* Altura mínima para não ficar "magro" demais se vazio */
-    
-    position: relative;
-    width: 80%;
-    max-width: 900px; /* Limite de largura */
-    background: #D9D9D9;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    
-    /* Layout Flex para organizar Título em cima e Botões embaixo */
-    display: flex;
-    flex-direction: column;
-    padding: 20px 30px; /* Espaço interno geral */
-    margin-top: 20px;
-    box-sizing: border-box; /* Garante que o padding não estoure a largura */
-}
-.acoes-titulo {
-    font-weight: 700;
-    font-size: 22px;
-    color: #2E2E2E;
-    margin-bottom: 15px; /* Empurra os botões para baixo */
-}
-
-.menu-grid {
-    display: flex;
-    justify-content: space-between; /* Distribui os botões uniformemente */
-    flex-wrap: wrap; /* Permite cair para a linha de baixo se faltar espaço */
-    gap: 15px; /* Espaço entre os botões */
+.search-input {
     width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #5F5F5F;
+    padding-right: 50px; /* Espaço para o ícone na direita */
+    font-family: 'Content', sans-serif; /* Mantendo fonte original se disponível */
 }
 
-.menu-item {
-    /* Flex grow faz o botão tentar preencher o espaço vazio */
-    flex: 1 1 110px; 
-    
-    /* Tamanhos limites */
-    min-width: 110px;
-    max-width: 140px; /* Impede que fiquem gigantescos em telas wide */
-    height: 120px;
-    
+.header-actions {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.notification-bell {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* --- AÇÕES RÁPIDAS --- */
+.quick-actions-section {
+    background: #D9D9D9;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 28px;
+    padding: 30px 50px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-weight: 700;
+    font-size: 28px;
+    color: #2E2E2E;
+    margin-bottom: 20px;
+}
+
+.actions-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.action-card {
+    flex: 1;
+    min-width: 140px;
+    height: 154px;
     background: #1C7B07;
-    border-radius: 18px;
+    border-radius: 24px;
     border: none;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    transition: transform 0.2s ease;
+    gap: 15px;
+    transition: transform 0.2s;
+    text-decoration: none;
 }
 
-.menu-item:hover {
+.action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.menu-text {
-    width: 122px;
-    height: 20px;
-    font-size: 13px;
-    line-height: 120%;
+.action-card span {
+    color: white;
+    font-size: 17px;
     text-align: center;
-    color: #FFFFFF;
+    line-height: 1.2;
 }
 
-.menu-icon {
-    width: 20px;
-    height: 20px;
-    transform: scale(0.9);
-    background-color: #E6E6E6;
-}
-
-.client-icon {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    
-    /* Caminho relativo: sai da pasta 'css' e entra na 'img' */
-    background-image: url('../img/client-icon.svg'); 
-
-    /* Importante: remove o fundo cinza padrão do botão */
-    background-color: transparent !important; 
-}
-
-.payment-icon {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-image: url('../img/payment-icon.svg');
-    background-color: transparent !important;
-}
-
-.sale-icon {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-image: url('../img/sale-icon.svg');
-    background-color: transparent !important;
-}
-
-.reminder-icon {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-image: url('../img/reminder-icon.svg');
-    background-color: transparent !important;
-}
-
-.all-options-icon {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-image: url('../img/all-options-icon.svg');
-    background-color: transparent !important;
-}
-
-/* DASHBOARD */
+/* --- DASHBOARD --- */
 .dashboard-section {
-    /* Removemos position absolute para ele fluir na página */
-    position: relative;
-    
-    /* Largura fluida com limite máximo */
     width: 100%;
-    max-width: 900px;
-    height: auto;
-    
-    /* Espaçamento: 40px do topo (afasta do menu), auto nas laterais (centraliza se sobrar espaço) */
-    margin: 20px 0; 
-    padding: 0 10px; /* Margem de segurança para mobile */
-    
-    /* Flex para alinhar textos */
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #2E2E2E;
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* RESTAURADO: Nome da classe original para JS funcionar */
+.dashboard-card {
+    background: #E6E6E6;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 20px;
+    height: 130px;
+    position: relative;
     display: flex;
     flex-direction: column;
-}
-
-.dashboard-titulo {
-    font-weight: 700;
-    font-size: 26px;
-    line-height: 1.2;
-    color: #2E2E2E;
-    margin-bottom: 5px;
-}
-
-.dashboard-subtitulo {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #2E2E2E;
-    margin-bottom: 20px; /* Espaço entre o subtítulo e os cards */
-}
-
-/* Onde a mágica acontece: Container dos Cards */
-.dashboard-cards {
-    position: static; /* Remove absolute */
-    width: 100%;
-    height: auto;
-    
-    /* GRID RESPONSIVO */
-    display: grid;
-    /* Cria colunas automáticas que têm no MÍNIMO 220px e no MÁXIMO 1 fração do espaço */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 15px; /* Espaço entre os cards */
-}
-
-.dashboard-card {
-    position: relative;
-    width: 100%;
-    /* MUDANÇA: Reduzido de 130px para 100px */
-    height: 100px; 
-    background: #D6D6D6;
-    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
+    justify-content: space-between;
     transition: transform 0.2s ease;
 }
 
 .dashboard-card:hover {
-    transform: translateY(-5px); /* Efeito visual ao passar o mouse */
+    transform: translateY(-5px);
 }
 
-/* Mantemos o conteúdo interno do card como absolute por enquanto, 
-   pois o card tem altura fixa e funciona bem assim */
-.card-titulo {
-    position: absolute;
-    left: 18px;
-    top: 12px; /* Subiu um pouquinho */
-    font-size: 15px;
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.stat-label {
+    font-size: 18px;
     color: #2E2E2E;
 }
 
+.stat-icon-small {
+    opacity: 0.7;
+}
+
+.stat-icon-small.alert svg {
+    stroke: #AF1E1E;
+}
+
+/* Mantendo classe card-valor */
 .card-valor {
-    position: absolute;
-    left: 18px;
-    top: 38px; /* Centralizado melhor na nova altura */
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
+    font-size: 26px;
+    color: #2E2E2E;
+}
+
+.stat-desc {
+    font-size: 12px;
+    color: #2E2E2E;
+}
+
+/* --- SEÇÃO INFERIOR (NOVAS LISTAS) --- */
+.bottom-section {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.panel-container {
+    background: #E6E6E6;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    min-width: 350px;
+}
+
+.panel-title {
+    font-weight: 700;
     font-size: 22px;
-    color: #2E2E2E;
+    margin-bottom: 20px;
+    color: #000;
 }
 
-.card-subtitulo {
-    position: absolute;
-    left: 18px;
-    bottom: 10px; /* Ajuste fino */
-    font-size: 11px;
-    color: #2E2E2E;
+/* Lista Movimentações */
+.movements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.card-icone {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    right: 18px;
-    top: 12px; /* Alinhado com o título */
-    background: #2E2E2E;
-    opacity: 0.1;
+.movement-item {
+    background: #D9D9D9;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movement-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.mov-name { font-weight: 700; font-size: 16px; color: #000; }
+.mov-type { font-size: 14px; color: #333; }
+.mov-time { font-size: 12px; color: #555; margin-top: 2px; }
+
+.mov-badge {
+    border-radius: 18px;
+    padding: 8px 15px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.mov-badge.green { background: #1C7B07; color: #E6E6E6; }
+.mov-badge.blue { background: #1437A9; color: #E6E6E6; }
+
+.mov-badge span { font-size: 11px; margin-bottom: 2px; }
+.mov-badge strong { font-size: 14px; font-weight: 700; }
+
+/* Lista Devedores */
+.debtors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.debtor-item {
+    background: #D9D9D9;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.debtor-rank {
+    width: 35px;
+    height: 35px;
+    background: #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.debtor-info { flex: 1; }
+
+.debtor-name { font-weight: 700; font-size: 16px; color: #000; }
+.debtor-status { font-size: 13px; color: #AF1E1E; }
+
+.debtor-badge.red {
+    background: #AF1E1E;
+    border-radius: 18px;
+    padding: 8px 15px;
+    color: #E6E6E6;
+    font-weight: 700;
+    font-size: 14px;
 }
