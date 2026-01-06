@@ -131,27 +131,23 @@ function validateSaleFields() {
 }
 
 function validatePaymentFields() {
-    const linkedClient = document.getElementById('paymentLinkedClient')?.value;
-    const paymentValue = document.getElementById('paymentValue')?.value.trim();
-    const paymentMethod = document.getElementById('paymentMethod')?.value;
+    // Nota: O ID no HTML do modal de pagamento (criado via JS em modals.js) pode variar.
+    // O modal original usava 'paymentLinkedClient' mas o novo 'custom-select' usa lógica diferente.
+    // Vamos garantir que a função confirmPaymentUI lá no modals.js cuide da coleta de dados.
+    // Esta função aqui é um helper de validação genérica se necessário.
+    
+    const paymentValue = document.getElementById('payValueInput')?.value.trim();
+    const paymentMethod = document.getElementById('payMethodInput')?.value;
 
-    if (!linkedClient || !paymentValue || !paymentMethod) {
-        showNotification('Preencha todos os campos obrigatórios', 'error');
-        return false;
+    if (!paymentValue || !paymentMethod) {
+        // A validação principal já ocorre dentro de confirmPaymentUI no modals.js
+        return false; 
     }
-    
-    // Validar valor
-    const valueNumber = parseMoneyToNumber(paymentValue);
-    if (valueNumber <= 0) {
-        showNotification('Valor do pagamento deve ser maior que zero', 'error');
-        return false;
-    }
-    
-    return { linkedClient, paymentValue, paymentMethod };
+    return true;
 }
 
 
-// --- LÓGICA DOS BOTÕES ATUALIZADA ---
+// --- LÓGICA DOS BOTÕES ---
 
 // BOTÃO VERDE: Cadastra cliente e abre venda
 function registerAndSell() {
@@ -224,34 +220,16 @@ function confirmSale() {
     }
 }
 
-
-/* Confirma registro de pagamento (COM LÓGICA FIFO) */
-function confirmPayment() {
-    const paymentData = validatePaymentFields();
-    if (!paymentData) return;
-
-    // Busca nome do cliente
-    const client = window.clientsList.find(c => c.id === parseInt(paymentData.linkedClient));
-    if (!client) {
-        showNotification('Cliente não encontrado!', 'error');
-        return;
-    }
-
-    // Registra o pagamento (a função já mostra o feedback detalhado)
-    const newPayment = addNewPayment(
-        paymentData.linkedClient,
-        client.name,
-        paymentData.paymentValue,
-        paymentData.paymentMethod
-    );
-
-    if (newPayment) {
-        closePaymentModal();
-    }
-}
-
+// A função confirmPayment() foi movida/substituída pela confirmPaymentUI() dentro de modals.js
+// pois o novo modal de pagamento tem lógica mais complexa de UI.
 
 function handleMenuClick(option) {
+    // Se estiver no mobile, fecha o menu ao clicar numa opção
+    const sidebar = document.getElementById('appSidebar');
+    if (sidebar && sidebar.classList.contains('show')) {
+        toggleSidebar();
+    }
+
     if (option === 'Registrar Pagamento') {
         openPaymentModal();
     } else {
@@ -259,7 +237,7 @@ function handleMenuClick(option) {
     }
 }
 
-/*Busca de clientes */
+/* Busca de clientes */
 function performSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchTerm = searchInput?.value.trim().toLowerCase();
@@ -297,4 +275,15 @@ function performSearch() {
     
     showNotification(message);
     console.log('🔍 Resultado da busca:', foundClients);
+}
+
+/* --- NOVO: CONTROLE DO MENU MOBILE --- */
+function toggleSidebar() {
+    const sidebar = document.getElementById('appSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+    }
 }
