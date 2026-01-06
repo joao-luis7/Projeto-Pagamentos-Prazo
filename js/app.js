@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Criar modais e carregar dados iniciais
     createModals();
     
-    // Configurar eventos
+    // Configurar eventos gerais
     setupEventListeners();
+    
+    // Configurar navegação do menu lateral (NOVO)
+    setupSidebarNavigation();
     
     // Garantir que modais estejam ocultos
     hideAllModals();
@@ -16,6 +19,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Atualizar dashboard com dados iniciais
     updateDashboard();
 });
+
+// --- FUNÇÃO NOVA: NAVEGAÇÃO DO MENU ---
+function setupSidebarNavigation() {
+    const navLinks = document.querySelectorAll('.sidebar-nav .nav-item');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Remove a classe 'active' de todos os itens
+            navLinks.forEach(nav => nav.classList.remove('active'));
+
+            // Adiciona a classe 'active' apenas ao item clicado
+            this.classList.add('active');
+
+            // Fecha o menu mobile se estivermos no celular
+            const sidebar = document.getElementById('appSidebar');
+            if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('show')) {
+                toggleSidebar();
+            }
+        });
+    });
+}
 
 function hideAllModals() {
     ['clientModal', 'saleModal', 'paymentModal'].forEach(id => {
@@ -131,19 +155,8 @@ function validateSaleFields() {
 }
 
 function validatePaymentFields() {
-    // Nota: O ID no HTML do modal de pagamento (criado via JS em modals.js) pode variar.
-    // O modal original usava 'paymentLinkedClient' mas o novo 'custom-select' usa lógica diferente.
-    // Vamos garantir que a função confirmPaymentUI lá no modals.js cuide da coleta de dados.
-    // Esta função aqui é um helper de validação genérica se necessário.
-    
-    const paymentValue = document.getElementById('payValueInput')?.value.trim();
-    const paymentMethod = document.getElementById('payMethodInput')?.value;
-
-    if (!paymentValue || !paymentMethod) {
-        // A validação principal já ocorre dentro de confirmPaymentUI no modals.js
-        return false; 
-    }
-    return true;
+    // A validação principal já ocorre dentro de confirmPaymentUI no modals.js
+    return false; 
 }
 
 
@@ -220,20 +233,12 @@ function confirmSale() {
     }
 }
 
-// A função confirmPayment() foi movida/substituída pela confirmPaymentUI() dentro de modals.js
-// pois o novo modal de pagamento tem lógica mais complexa de UI.
-
 function handleMenuClick(option) {
-    // Se estiver no mobile, fecha o menu ao clicar numa opção
-    const sidebar = document.getElementById('appSidebar');
-    if (sidebar && sidebar.classList.contains('show')) {
-        toggleSidebar();
-    }
-
     if (option === 'Registrar Pagamento') {
         openPaymentModal();
     } else {
-        showNotification(`Abrindo: ${option}`);
+        // Apenas visual, já que não temos páginas reais ainda
+        // O efeito de mudança de menu já é tratado pela setupSidebarNavigation
     }
 }
 
@@ -247,7 +252,6 @@ function performSearch() {
         return;
     }
     
-    // Busca clientes
     const foundClients = window.clientsList.filter(client => 
         client.name.toLowerCase().includes(searchTerm) ||
         client.phone.includes(searchTerm)
@@ -258,11 +262,9 @@ function performSearch() {
         return;
     }
     
-    // Busca vendas desses clientes
     const clientIds = foundClients.map(c => c.id);
     const clientSales = window.salesList.filter(sale => clientIds.includes(sale.clientId));
     
-    // Monta mensagem
     let message = `Encontrado(s) ${foundClients.length} cliente(s):\n\n`;
     
     foundClients.forEach(client => {
@@ -277,7 +279,7 @@ function performSearch() {
     console.log('🔍 Resultado da busca:', foundClients);
 }
 
-/* --- NOVO: CONTROLE DO MENU MOBILE --- */
+/* --- CONTROLE DO MENU MOBILE --- */
 function toggleSidebar() {
     const sidebar = document.getElementById('appSidebar');
     const overlay = document.getElementById('sidebarOverlay');

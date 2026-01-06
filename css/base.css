@@ -10,7 +10,7 @@
 body {
     background: #D6D6D6;
     height: 100vh;
-    overflow: hidden; /* Scroll gerido pelo conteúdo principal no desktop */
+    overflow: hidden; 
 }
 
 /* LAYOUT PRINCIPAL (DESKTOP) */
@@ -23,7 +23,6 @@ body {
     transform: scale(0.85);
     transform-origin: top left;
     
-    /* Compensa o tamanho para preencher a tela */
     width: 117.65%;
     height: 117.65%;
 }
@@ -38,7 +37,7 @@ body {
     flex-direction: column;
     padding: 40px 20px;
     z-index: 100;
-    transition: transform 0.3s ease; /* Animação suave */
+    transition: transform 0.3s ease; 
 }
 
 .sidebar-header {
@@ -50,7 +49,6 @@ body {
     margin-bottom: 40px;
 }
 
-/* Botão de fechar (dentro do menu) - Escondido no Desktop */
 .menu-trigger {
     display: none; 
     cursor: pointer;
@@ -67,6 +65,7 @@ body {
     margin-top: auto;
 }
 
+/* ITEM DO MENU - ANIMAÇÃO FLUIDA */
 .nav-item {
     display: flex;
     align-items: center;
@@ -76,13 +75,22 @@ body {
     font-size: 18px;
     font-weight: 400;
     border-radius: 16px;
-    transition: all 0.2s ease;
+    
+    /* ANIMAÇÃO FLUIDA */
+    /* cubic-bezier(0.25, 0.1, 0.25, 1) cria um efeito de "arranque rápido e parada suave" */
+    transition: background-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+                font-weight 0.2s ease;
+    
+    /* Para garantir que não haja bordas serrilhadas na animação */
+    will-change: background-color, box-shadow;
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
 }
 
+/* ESTADO ATIVO (O retângulo branco) */
 .nav-item.active {
     background: #F6F6F6;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
@@ -126,7 +134,6 @@ body {
 }
 
 /* --- HEADER SUPERIOR --- */
-/* Botão Menu Mobile (Hamburguer) - Escondido no Desktop */
 .mobile-menu-btn {
     display: none;
     cursor: pointer;
@@ -135,7 +142,7 @@ body {
 
 /* --- OVERLAY DO MENU MOBILE --- */
 .sidebar-overlay {
-    display: none; /* Escondido por padrão */
+    display: none; 
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -174,10 +181,9 @@ body {
 @media (max-width: 768px) {
     
     body {
-        overflow: auto; /* Permite scroll natural no mobile */
+        overflow: auto; 
     }
 
-    /* Removemos o zoom no mobile */
     .app-layout {
         transform: none;
         width: 100%;
@@ -185,36 +191,30 @@ body {
         display: block; 
     }
 
-    /* --- CORREÇÃO DO HEADER MOBILE --- */
     .top-header {
-        display: flex; /* Garante layout em linha */
+        display: flex; 
         align-items: center;
         justify-content: space-between;
-        gap: 12px; /* Espaço seguro entre os itens */
+        gap: 12px; 
     }
 
     .mobile-menu-btn {
         display: block;
-        flex-shrink: 0; /* Impede que o botão amasse */
+        flex-shrink: 0; 
     }
 
     .search-container {
-        flex: 1; /* A busca ocupa APENAS o espaço disponível no meio */
-        width: auto; /* Reseta larguras fixas */
+        flex: 1; 
+        max-width: none;
         margin: 0;
     }
     
-    /* Esta classe tinha position: absolute no CSS de componentes. 
-       Aqui resetamos para static para ela entrar no fluxo e não sobrepor a busca */
     .header-actions {
         position: static;
         transform: none;
-        flex-shrink: 0; /* Impede que o sino amasse */
+        flex-shrink: 0; 
     }
 
-    /* --- FIM DA CORREÇÃO --- */
-
-    /* Menu Lateral Mobile */
     .sidebar {
         position: fixed;
         top: 0;
@@ -240,7 +240,6 @@ body {
         margin-bottom: 20px;
     }
 
-    /* Conteúdo Principal Mobile */
     .main-content {
         width: 100%;
         padding: 20px 15px;
