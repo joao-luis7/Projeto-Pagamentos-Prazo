@@ -10,7 +10,6 @@
     background: rgba(59, 59, 59, 0.42);
     z-index: 1000;
     
-    /* Centralização com Flexbox (substitui cálculos manuais) */
     display: none;
     justify-content: center;
     align-items: center;
@@ -18,52 +17,50 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease;
-    padding: 20px; /* Garante espaço em telas pequenas */
+    padding: 20px;
 }
 
 .modal-overlay.show {
-    display: flex; /* Mudamos de block para flex para centralizar */
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
 
 .modal-container {
     position: relative;
-    /* Reduzimos a largura de 875px para 600px (~30% menor) */
     width: 100%;
     max-width: 600px;
-    height: auto; /* Altura automática ajustável ao conteúdo */
+    height: auto;
     
     background: #D9D9D9;
     border-radius: 20px;
-    padding: 30px 40px; /* Espaçamento interno */
+    padding: 30px 40px;
     
-    /* Organização interna em coluna */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Espaço entre os campos */
+    gap: 15px;
     
-    transform: scale(0.9);
+    /* Começa um pouco menor para animar */
+    transform: scale(0.75); 
     transition: transform 0.2s ease;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transition: all 0.3s ease; /*animação ao crescer*/
-
     padding-bottom: 40px;
 }
 
-/* --- ESTILOS ESPECÍFICOS DO NOVO MODAL DE PAGAMENTO --- */
+/* Quando o modal abre, ele cresce até 0.85 para combinar com o zoom do site */
+.modal-overlay.show .modal-container {
+    transform: scale(0.85);
+}
 
-/* 1. Ajuste do Container Principal */
+/* --- ESTILOS ESPECÍFICOS DO MODAL DE PAGAMENTO --- */
 .payment-container {
-    /* REMOVA: width: 875px; */
-    width: 95%; /* Ocupa 95% da tela em vez de fixo */
-    max-width: 800px; /* Limite máximo para desktop */
+    width: 95%;
+    max-width: 800px;
     height: auto;
     padding-bottom: 30px; 
     border-radius: 25px;
     align-items: center;
-    /* Adicionado para garantir que o padding não estoure a largura */
     box-sizing: border-box; 
 }
 .payment-header{
@@ -71,7 +68,7 @@
     margin-bottom: 10px;
 }
 
-.moldal-title {
+.moldal-title { /* Nota: mantido erro de digitação original se houver no HTML, ou ajuste para modal-title */
     font-family: 'Content', sans-serif;
     font-weight: 700;
     font-size: 38px;
@@ -84,7 +81,8 @@
     font-size: 20px;
     color: #2E2E2E;
 }
-/* 2. O Dropdown Customizado (Trigger) */
+
+/* Dropdown Customizado */
 .custom-select-wrapper {
     position: relative;
     width: 100%;
@@ -112,7 +110,7 @@
 }
 
 .custom-select-trigger span {
-    max-width: 70%; /* Dá espaço para a seta e a tag de valor */
+    max-width: 70%;
     font-family: 'Content', sans-serif;
     font-weight: 700;
     font-size: 18px;
@@ -126,14 +124,12 @@
     width: 24px;
     height: 24px;
     background-color: #2E2E2E;
-    /* Ícone de seta SVG via mask */
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
-    transform: translateY(-50%) rotate(-180deg); /* Começa pra baixo */
+    transform: translateY(-50%) rotate(-180deg);
     transition: transform 0.2s;
 }
 
-/* Tag de Preço no Header (Tela 3) */
 .debt-tag-large {
     background: #AF1E1E;
     border-radius: 15px;
@@ -142,25 +138,22 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 14px;
-    margin-left: auto; /* Empurra pra direita */
-    margin-right: 30px; /* Espaço da seta */
+    margin-left: auto;
+    margin-right: 30px;
 }
 
-/* 3. A Lista de Opções (Dropdown Aberto - Tela 2) */
+/* Lista de Opções */
 .custom-options {
     position: absolute;
     top: 100%;
     margin-top: 5px;
     left: 0;
-    width: 100%; /* Garante que tenha a mesma largura do botão */
+    width: 100%;
     background: #D9D9D9;
-    /* Sombra mais forte para dar efeito de profundidade 3D */
     box-shadow: 0px 10px 30px rgba(0,0,0,0.4); 
     border-radius: 19px;
-    padding: 10px; /* Reduzi um pouco o padding interno */
-    z-index: 9999; /* Garante que fique na frente de tudo */
-
-    /* Animação: escondido por padrão */
+    padding: 10px;
+    z-index: 9999;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -169,13 +162,12 @@
 }
 
 .custom-options.open {
-    max-height: 230px; /* espaço para o conteúdo */
+    max-height: 230px;
     overflow-y: auto;
     opacity: 1;
     transform: translateY(0);
 }
 
-/* seta gira quando aberto */
 .custom-select-trigger.open .dropdown-arrow {
     transform: translateY(-50%) rotate(0deg);
 }
@@ -216,7 +208,8 @@
     font-weight: 700;
     font-size: 16px;
 }
-/* 4. Área de Detalhes (Tela 3) */
+
+/* Detalhes de Pagamento */
 .payment-details {
     width: 100%;
     max-width: 100%;
@@ -231,10 +224,10 @@
     display: none;
     opacity: 0;
 }
-/* Lista de Débitos (Scrollável) */
+
 .debts-list-container {
     width: 100%;
-    max-height: 30vh; /* Altura fixa aproximada do Figma */
+    max-height: 30vh;
     min-height: 100px;
     overflow-y: auto;
     border: 1px solid #5F5F5F;
@@ -242,7 +235,6 @@
     border-radius: 10px;
     padding: 15px;
     background: #D9D9D9;
-
     flex-shrink: 0;
 }
 .debt-item {
@@ -255,7 +247,6 @@
     border-radius: 10px;
     margin-bottom: 15px;
     padding: 15px 20px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -275,7 +266,7 @@
 .debt-values {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Alinha tudo à direita */
+    align-items: flex-end;
     justify-content: center;
     gap: 5px;
 }
@@ -306,20 +297,20 @@
     font-size: 14px;
     text-align: center;
 }
-/* 5. Inputs do Rodapé */
+
+/* Footer Inputs */
 .payment-footer-inputs {
     display: flex;
     justify-content: space-between;
     gap: 10px;
     flex-wrap: wrap;
 }
-
 .footer-input-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
     flex: 1; 
-    min-width: 140px; /* Mínimo antes de quebrar */
+    min-width: 140px;
 }
 .footer-input-group label {
     font-family: 'Content', sans-serif;
@@ -327,7 +318,6 @@
     font-size: 16px;
     color: #000;
 }
-
 .input-box {
     height: 40px;
     border: 1px solid #5F5F5F;
@@ -351,13 +341,13 @@
     color: #2E2E2E;
 }
 
-/* 6. Botões Finais */
+/* Botões */
 .payment-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 10px;
-    flex-wrap: wrap; /* Permite quebrar linha se necessário */
+    flex-wrap: wrap;
 }
 .btn-confirm {
     width: 203px;
@@ -383,18 +373,15 @@
     font-weight: 600;
     font-size: 16px;
 }
-.modal-overlay.show .modal-container {
-    transform: scale(1);
-}
 
+/* Modal Title */
 .modal-title {
-    position: relative; /* Removemos absolute */
+    position: relative;
     width: 100%;
     height: auto;
     left: auto; top: auto;
-    
     font-weight: 700;
-    font-size: 28px; /* Reduzido de 38px */
+    font-size: 28px;
     line-height: 1.2;
     color: #2E2E2E;
     text-align: center;
@@ -402,28 +389,15 @@
     margin-top: 10px;
 }
 
-/* FORM FIELDS */
+/* Form Fields */
 .form-field {
-    position: relative; /* Empilha naturalmente */
+    position: relative;
     width: 100%;
-    /* Reduzimos altura de 64px para 50px */
     height: 50px; 
     left: auto; top: auto;
     margin-bottom: 5px;
 }
-
-/* Classes específicas de posição não são mais necessárias 
-   pois o flexbox cuida da ordem, mas mantemos para referência se precisar */
-.form-field.nome, .form-field.telefone, .form-field.endereco,
-.form-field.cliente-vinculado, .form-field.data, .form-field.produtos,
-.form-field.valor-total, .form-field.pagamento, .form-field.valor-pago,
-.form-field.forma-pagamento {
-    top: auto; left: auto;
-}
-
-.form-field.expanded {
-    height: 100px; /* Reduzido de 116px */
-}
+.form-field.expanded { height: 100px; }
 
 .form-field-bg {
     position: absolute;
@@ -431,50 +405,24 @@
     height: 100%;
     background: #D9D9D9;
     box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px; /* Arredondamento proporcional */
+    border-radius: 15px;
 }
-
-.form-field-bg.expanded {
-    height: 100%;
-}
-
-.debt-info {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    text-align: left;
-}
+.form-field-bg.expanded { height: 100%; }
 
 .form-field-label {
     position: absolute;
     left: 20px;
     top: 50%;
     transform: translateY(-50%);
-    
-    font-weight: 700;
-    font-size: 15px; /* Tamanho normal quando vazio */
+    font-weight: 500;
+    font-size: 15px;
     color: #2E2E2E;
-    
     z-index: 1;
     transition: all 0.2s ease;
     pointer-events: none;
-    opacity: 1;
 }
 
-.form-field-note {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 9px;
-    color: #2E2E2E;
-    z-index: 1;
-}
-
-.form-field-input,
-.form-field-select {
+.form-field-input, .form-field-select {
     position: absolute;
     left: 20px;
     width: calc(100% - 40px);
@@ -482,76 +430,34 @@
     background: transparent;
     border: none;
     outline: none;
-    
-    /* Texto digitado em baixo, preto e mais forte */
     font-size: 16px;
     color: #2E2E2E;
     font-weight: 400;
     padding-top: 26px; 
     padding-bottom: 0;
-    
     z-index: 2;
     appearance: none;
 }
+.form-field-input::placeholder { color: transparent; }
+.form-field-select { cursor: pointer; }
 
-.form-field-input::placeholder {
-    color: transparent;
-}
-
-.form-field-select {
-    cursor: pointer;
-}
-
-/* --- RÓTULO (LABEL) EM REPOUSO --- */
-.form-field-label {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    
-    /* Configuração padrão */
-    font-weight: 500;
-    font-size: 15px;
-    color: #2E2E2E;
-    
-    z-index: 1;
-    transition: all 0.2s ease;
-    pointer-events: none;
-}
-
-/* --- RÓTULO (LABEL) FLUTUANTE (ATIVO) --- */
-/* O CSS detecta sozinho quando foca ou tem texto */
+/* Labels Flutuantes */
 .form-field-input:focus + .form-field-label,
 .form-field-input:not(:placeholder-shown) + .form-field-label,
 .form-field-select:focus + .form-field-label,
 .form-field-select:not([value=""]) + .form-field-label {
-    /* Sobe e diminui */
     transform: translateY(-14px);
     font-size: 11px;
     opacity: 0.7;
     color: #2E2E2E;
 }
 
-.dropdown-arrow {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%) rotate(-180deg);
-    width: 20px;
-    height: 20px;
-    background: #2E2E2E;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232E2E2E' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232E2E2E' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6z'/%3E%3C/svg%3E") no-repeat center;
-    z-index: 1;
-}
-
-/* BUTTONS */
+/* Botões do Modal */
 .modal-btn {
-    position: relative; /* Flexbox empilha */
+    position: relative;
     width: 100%;
-    height: 50px; /* Reduzido de 64px */
+    height: 50px;
     left: auto; top: auto;
-    
     border: none;
     cursor: pointer;
     border-radius: 15px;
@@ -562,90 +468,48 @@
     transition: all 0.2s ease;
     margin-top: 10px;
 }
-
 .modal-btn.primary {
     background: #1C7B07;
     box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-top: 20px; /* Separação extra do formulário */
+    margin-top: 20px;
 }
-
 .modal-btn.secondary {
     background: #D6D6D6;
     box-shadow: none;
-    margin-top: 0; /* Cola no botão de cima */
-    background: transparent; /* Opcional: estilo link */
+    margin-top: 0;
+    background: transparent;
     border: 1px solid #ccc;
 }
-
 .modal-btn.sale-confirm, .modal-btn.payment-confirm {
-    width: 100%; /* Ocupa largura total agora */
-    max-width: 250px; /* Mas não fica gigante */
+    width: 100%;
+    max-width: 250px;
 }
-
 .modal-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-
 .modal-btn-text.primary {
     font-weight: 700;
-    font-size: 16px; /* Reduzido de 22px */
+    font-size: 16px;
     color: #FFFFFF;
 }
-
 .modal-btn-text.secondary {
     font-weight: 700;
-    font-size: 14px; /* Reduzido de 20px */
+    font-size: 14px;
     color: #2E2E2E;
 }
 
-.modal-btn-icon {
-    width: 20px;
-    height: 20px;
-    background-color: #E6E6E6;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E6E6E6' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E6E6E6' d='M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20zm2-2h12v-.8q0-.275-.137-.5t-.363-.35q-1.35-.675-2.725-1.012T12 15t-2.775.338T6.5 16.35q-.225.125-.363.35T6 17.2zm6-8q.825 0 1.413-.587T14 8t-.587-1.412T12 6t-1.412.588T10 8t.588 1.413T12 10m0 8'/%3E%3C/svg%3E") no-repeat center;
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-}
-
-/* Lógica do Label de Pagamento */
-.form-field-select:not([value=""]) + .form-field-label.payment-client {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.form-field-select[value=""] + .form-field-label.payment-client {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* --- MEDIA QUERY ESPECÍFICA PARA CELULARES --- */
+/* Responsivo Mobile */
 @media (max-width: 480px) {
-    .modal-container {
-        padding: 20px 15px; /* Menos padding lateral */
-    }
-
-    .moldal-title {
-        font-size: 24px; /* Título menor */
-    }
-    
-    .modal-subtitle {
-        font-size: 14px;
-    }
-
-    /* Esconde a tag de valor grande no topo se a tela for muito pequena */
-    .debt-tag-large {
-        display: none; 
-    }
-    
-    /* Ajusta lista de débitos */
+    .modal-container { padding: 20px 15px; }
+    .moldal-title { font-size: 24px; }
+    .modal-subtitle { font-size: 14px; }
+    .debt-tag-large { display: none; }
     .debt-item {
-        flex-direction: column; /* Empilha info e valor */
+        flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
     .debt-values {
         width: 100%;
         flex-direction: row;

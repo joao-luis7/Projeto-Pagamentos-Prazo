@@ -10,7 +10,8 @@
 body {
     background: #D6D6D6;
     height: 100vh;
-    overflow: hidden; /* Evita scroll na página toda, apenas no main */
+    overflow: hidden; /* Evita scroll na janela principal */
+    /* REMOVIDO: O transform não fica mais aqui */
 }
 
 /* LAYOUT PRINCIPAL */
@@ -18,6 +19,14 @@ body {
     display: flex;
     width: 100%;
     height: 100%;
+    
+    /* --- EFEITO DE ZOOM APLICADO AQUI --- */
+    transform: scale(0.85);
+    transform-origin: top left;
+    
+    /* Compensa o tamanho para preencher a tela (100 / 0.85 = ~117.65%) */
+    width: 117.65%;
+    height: 117.65%;
 }
 
 /* --- SIDEBAR --- */
@@ -88,19 +97,17 @@ body {
     flex: 1;
     background: #D6D6D6;
     padding: 30px 50px;
-    overflow-y: auto; /* Scroll apenas aqui */
+    overflow-y: auto; 
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-/* O ID mainContainer no HTML garante que essa classe funcione ao abrir modal */
 .main-content.blurred {
     filter: blur(4px);
     pointer-events: none;
 }
 
-/* Scrollbar personalizada */
 .main-content::-webkit-scrollbar {
     width: 8px;
 }
@@ -112,7 +119,7 @@ body {
     border-radius: 4px;
 }
 
-/* NOTIFICAÇÕES (Toast) */
+/* NOTIFICAÇÕES */
 .notification {
     position: fixed;
     top: 20px;
