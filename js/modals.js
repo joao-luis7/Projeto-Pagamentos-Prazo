@@ -655,7 +655,6 @@ function openReminderModal() {
     const today = new Date();
     today.setHours(0,0,0,0);
 
-    // Array temporário para ordenar por dias de atraso (maior atraso primeiro)
     let overdueClients = [];
 
     window.clientsList.forEach(client => {
@@ -689,10 +688,9 @@ function openReminderModal() {
         }
     });
 
-    // Ordena visualmente: quem deve há mais tempo aparece primeiro
     overdueClients.sort((a, b) => b.days - a.days);
 
-    // 1. Atualiza o Título Vermelho Geral
+    // 1. Atualiza o Título
     if (overdueCount > 0) {
         const plural = overdueCount > 1 ? 'Pagamentos Atrasados' : 'Pagamento Atrasado';
         titleContainer.innerHTML = `${overdueCount} ${plural}`;
@@ -706,8 +704,10 @@ function openReminderModal() {
         overdueClients.forEach(item => {
             const dateParts = item.sale.dueDate.split('-');
             const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+            
+            // [NOVO] Pega o valor formatado
+            const debtValue = formatCurrency(item.sale.remainingValue);
 
-            // Estrutura nova: Wrapper relativo para segurar o Badge absoluto
             const cardHTML = `
                 <div class="reminder-item-wrapper">
                     <div class="reminder-floating-badge">
@@ -718,8 +718,11 @@ function openReminderModal() {
                         <div class="reminder-info-left">
                             <div class="client-name-bold">${item.client.name}</div>
                             
-                            <div class="client-details-row" style="gap: 30px;">
+                            <div class="client-details-row" style="gap: 20px;">
                                 <span style="font-weight: 500; color: #000;">${item.sale.products}</span>
+                                
+                                <span style="font-weight: 700; color: #AF1E1E;">${debtValue}</span>
+                                
                                 <span style="color: #444;">Vencimento: ${dateFormatted}</span>
                             </div>
                         </div>

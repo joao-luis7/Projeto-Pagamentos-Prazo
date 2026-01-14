@@ -502,10 +502,11 @@
 /* --- ESTILOS DO MODAL DE LEMBRETE (Design Atualizado) --- */
 
 .reminder-container {
-    max-width: 900px;
+    max-width: 1100px;
+    width: 95%;
     background: #D9D9D9;
     border-radius: 25px;
-    padding: 30px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
 }
@@ -521,12 +522,13 @@
 .reminder-main-box {
     background: #F4F4F4; /* Um fundo bem claro, quase branco */
     border-radius: 20px;
-    padding: 35px;
+    padding: 40px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.05); /* Sombra interna sutil */
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-height: 60vh; /* Altura máxima */
+    gap: 15px;
+    min-height: 400px;
+    max-height: 70vh; /* Altura máxima */
     overflow: hidden; /* O scroll é interno */
 }
 
@@ -543,8 +545,8 @@
 /* Container de Scroll */
 .reminder-list-container {
     overflow-y: auto;
-    padding-top: 15px; /* Espaço para o badge do primeiro item não cortar */
-    padding-bottom: 10px;
+    padding-top: 20px; /* Espaço para o badge do primeiro item não cortar */
+    padding-bottom: 20px;
     display: flex;
     flex-direction: column;
     gap: 25px; /* Espaço maior entre os cartões para caber o badge */
@@ -559,7 +561,7 @@
 .reminder-item-wrapper {
     position: relative; /* Essencial para o badge absoluto */
     width: 100%;
-    margin-top: 5px; /* Espaço extra topo */
+    margin-top: 10px; /* Espaço extra topo */
 }
 
 /* O BADGE VERMELHO (Flutuante) */
@@ -572,11 +574,11 @@
     /* Borda "Folha": Canto superior esquerdo e inferior direito arredondados */
     border-radius: 12px 0px 20px 0px; 
     
-    padding: 8px 20px;
+    padding: 10px 25px;
     color: #FFFFFF;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     z-index: 2; /* Fica por cima do cartão */
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
@@ -584,9 +586,9 @@
 /* O CARTÃO CINZA (Conteúdo) */
 .reminder-gray-card {
     background: #E6E6E6;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid #d1d1d1;
-    padding: 25px 30px 20px 30px; /* Padding top maior para compensar o texto */
+    padding: 35px 40px 40px 40px; /* Padding top maior para compensar o texto */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -597,20 +599,20 @@
 .reminder-info-left {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 8px;
 }
 
 .client-name-bold {
     font-family: 'Content', sans-serif;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 24px;
     color: #000;
     padding: 10px;
 }
 
 .client-details-row {
     font-family: 'Content', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     display: flex;
     align-items: center;
