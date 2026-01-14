@@ -521,7 +521,7 @@
 .reminder-main-box {
     background: #F4F4F4; /* Um fundo bem claro, quase branco */
     border-radius: 20px;
-    padding: 25px;
+    padding: 35px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.05); /* Sombra interna sutil */
     display: flex;
     flex-direction: column;
@@ -565,12 +565,12 @@
 /* O BADGE VERMELHO (Flutuante) */
 .reminder-floating-badge {
     position: absolute;
-    top: -14px; /* Sobe para fora do cartão */
+    top: 0px; /* Sobe para fora do cartão */
     left: 0;
     
     background: #AF1E1E;
     /* Borda "Folha": Canto superior esquerdo e inferior direito arredondados */
-    border-radius: 20px 0px 20px 0px; 
+    border-radius: 12px 0px 20px 0px; 
     
     padding: 8px 20px;
     color: #FFFFFF;
