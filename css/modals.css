@@ -597,7 +597,7 @@
 .reminder-info-left {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
 }
 
 .client-name-bold {
@@ -605,6 +605,7 @@
     font-weight: 700;
     font-size: 20px;
     color: #000;
+    padding: 10px;
 }
 
 .client-details-row {
@@ -613,6 +614,7 @@
     color: #333;
     display: flex;
     align-items: center;
+    gap: 30px;
 }
 
 /* Botão Verde (Pílula) */

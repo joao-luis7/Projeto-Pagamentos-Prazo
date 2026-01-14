@@ -717,10 +717,10 @@ function openReminderModal() {
                     <div class="reminder-gray-card">
                         <div class="reminder-info-left">
                             <div class="client-name-bold">${item.client.name}</div>
-                            <div class="client-details-row">
-                                <span>${item.sale.products}</span>
-                                <span style="margin: 0 10px; opacity: 0.5">|</span>
-                                <span>Vencimento: ${dateFormatted}</span>
+                            
+                            <div class="client-details-row" style="gap: 30px;">
+                                <span style="font-weight: 500; color: #000;">${item.sale.products}</span>
+                                <span style="color: #444;">Vencimento: ${dateFormatted}</span>
                             </div>
                         </div>
 
