@@ -99,7 +99,7 @@ function renderCustomOptions() {
 }
 
 function selectPaymentClient(client) {
-    currentPaymentClient = client;
+    window.currentPaymentClient = client;
 
     // Fecha dropdown
     const optionsEl = document.getElementById('paymentClientOptions');
@@ -175,4 +175,65 @@ function renderDebtsList(client) {
         `;
         list.appendChild(item);
     });
+}
+
+// Confirmar Pagamento (Chamado pelo botão UI)
+function confirmPaymentUI() {
+    if (!window.currentPaymentClient) {
+        showNotification('Selecione um cliente primeiro!', 'error');
+        return;
+    }
+
+    const valueInput = document.getElementById('payValueInput');
+    const methodInput = document.getElementById('payMethodInput');
+
+    const paymentValue = valueInput.value;
+    const paymentMethod = methodInput.value;
+
+    if (!paymentValue || !paymentMethod) {
+        showNotification('Preencha valor e método.', 'error');
+        return;
+    }
+
+    // Chama a função lógica (back-end logic)
+    const result = addNewPayment(window.currentPaymentClient.id, window.currentPaymentClient.name, paymentValue, paymentMethod);
+
+    if (result) {
+        closePaymentModal();
+    }
+}
+
+function openPaymentModal() {
+    openModal('paymentModal');
+    
+    // Reset estado
+    window.currentPaymentClient = null;
+    const container = document.getElementById('paymentContainer');
+    if (container) container.classList.remove('expanded');
+    
+    const details = document.getElementById('paymentDetailsArea');
+    if (details) details.classList.add('hidden');
+
+    const trigger = document.querySelector('.custom-select-trigger');
+    if (trigger) {
+        trigger.innerHTML = `
+            <span id="paymentSelectedName">Cliente Vinculado</span>
+            <div class="dropdown-arrow"></div>
+        `;
+        trigger.onclick = togglePaymentDropdown;
+    }
+    
+    const today = getTodayDate();
+    const dateInput = document.getElementById('payDateInput');
+    if (dateInput) dateInput.value = today;
+    
+    const valueInput = document.getElementById('payValueInput');
+    if (valueInput) valueInput.value = '';
+    
+    const methodInput = document.getElementById('payMethodInput');
+    if (methodInput) methodInput.selectedIndex = 0;
+}
+
+function closePaymentModal() {
+    closeModal('paymentModal');
 }

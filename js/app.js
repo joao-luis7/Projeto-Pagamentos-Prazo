@@ -1,3 +1,9 @@
+function createModals() {
+    if (typeof createClientModal === 'function') createClientModal();
+    if (typeof createSaleModal === 'function') createSaleModal();
+    if (typeof createPaymentModal === 'function') createPaymentModal();
+    if (typeof createReminderModal === 'function') createReminderModal();
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializa todos os modais (HTML)

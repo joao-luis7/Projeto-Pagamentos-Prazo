@@ -75,3 +75,52 @@ function loadClients() {
         select.appendChild(option);
     });
 }
+
+function confirmSale() {
+    const linkedClientSelect = document.getElementById('linkedClient');
+    const saleDate = document.getElementById('saleDate');
+    const saleProducts = document.getElementById('saleProducts');
+    const saleValue = document.getElementById('saleValue');
+    const paymentDate = document.getElementById('paymentDate');
+
+    // Validação
+    if (!linkedClientSelect?.value) {
+        showNotification('Selecione um cliente', 'error');
+        return;
+    }
+
+    const clientId = parseInt(linkedClientSelect.value);
+    const client = window.clientsList.find(c => c.id === clientId);
+    
+    if (!client) {
+        showNotification('Cliente não encontrado', 'error');
+        return;
+    }
+
+    if (!saleDate?.value || !saleProducts?.value || !saleValue?.value) {
+        showNotification('Preencha todos os campos', 'error');
+        return;
+    }
+
+    // Converte valor
+    const totalValue = parseMoneyToNumber(saleValue.value);
+    
+    if (totalValue <= 0) {
+        showNotification('Informe um valor válido', 'error');
+        return;
+    }
+
+    // Adiciona venda
+    const newSale = addNewSale(
+        clientId,
+        client.name,
+        saleDate.value,
+        paymentDate.value || saleDate.value,
+        saleProducts.value,
+        totalValue
+    );
+
+    showNotification(`Venda registrada para ${client.name}!`);
+    closeSaleModal();
+    updateDashboard();
+}

@@ -27,3 +27,31 @@ function createClientModal() {
             </button>
         </div>`;
 }
+
+function registerOnly() {
+    const clientData = validateClientFields();
+    if (!clientData) return;
+
+    const newClient = addNewClient(clientData.name, clientData.phone, clientData.address);
+    showNotification(`Cliente ${clientData.name} cadastrado com sucesso!`);
+    
+    closeClientModal();
+    updateDashboard();
+}
+
+// Wrappers específicos para cada modal
+function openClientModal() {
+    openModal('clientModal');
+    clearClientFields();
+}
+
+function closeClientModal() {
+    closeModal('clientModal');
+}
+
+function clearClientFields() {
+    ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
+        const field = document.getElementById(id);
+        if (field) field.value = '';
+    });
+}
