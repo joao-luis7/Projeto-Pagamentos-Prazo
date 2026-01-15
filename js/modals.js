@@ -218,9 +218,10 @@ function addNewPayment(clientId, clientName, paymentValue, paymentMethod) {
 }
 
 // =============================================================================
-// 4. ESTRUTURA E INTERFACE DOS MODAIS
+// 4. INICIALIZAÇÃO DOS MODAIS (Coordenador)
 // =============================================================================
 
+// Função que coordena o carregamento de todos os modais
 function createModals() {
     createClientModal();
     createSaleModal();
@@ -228,138 +229,11 @@ function createModals() {
     createReminderModal();
 }
 
+// Variável global para rastrear cliente selecionado no modal de pagamento
 let currentPaymentClient = null;
 
-function createClientModal() {
-    const modal = document.getElementById('clientModal');
-    if (!modal) return;
-    modal.innerHTML = `
-        <div class="modal-container">
-            <div class="modal-title">Cadastro de cliente</div>
-            <div class="form-field nome">
-                <div class="form-field-bg"></div>
-                <input type="text" class="form-field-input" id="clientName" placeholder="Nome">
-                <label class="form-field-label">Nome:</label>
-            </div>
-            <div class="form-field telefone">
-                <div class="form-field-bg"></div>
-                <input type="tel" class="form-field-input" id="clientPhone" placeholder="Telefone">
-                <label class="form-field-label">Telefone:</label>
-            </div>
-            <div class="form-field endereco">
-                <div class="form-field-bg"></div>
-                <input type="text" class="form-field-input" id="clientAddress" placeholder="Endereço">
-                <label class="form-field-label">Endereço:</label>
-            </div>
-            <button class="modal-btn primary" onclick="registerAndSell()">
-                <span class="modal-btn-text primary">Cadastrar e vender</span>
-            </button>
-            <button class="modal-btn secondary" onclick="registerOnly()">
-                <span class="modal-btn-text secondary">Apenas cadastrar</span>
-            </button>
-        </div>`;
-}
-
-function createSaleModal() {
-    const modal = document.getElementById('saleModal');
-    if (!modal) return;
-    modal.innerHTML = `
-        <div class="modal-container">
-            <div class="modal-title">Registro de Venda</div>
-            <div class="form-field cliente-vinculado">
-                <div class="form-field-bg"></div>
-                <select class="form-field-select" id="linkedClient">
-                    <option value="">Selecione um cliente</option>
-                </select>
-                <label class="form-field-label">Cliente Vinculado</label>
-                <div class="dropdown-arrow"></div>
-            </div>
-            <div class="form-field data">
-                <div class="form-field-bg"></div>
-                <input type="date" class="form-field-input" id="saleDate">
-                <label class="form-field-label">Data:</label>
-            </div>
-            <div class="form-field produtos">
-                <div class="form-field-bg"></div>
-                <input type="text" class="form-field-input" id="saleProducts" placeholder="Produtos">
-                <label class="form-field-label">Produto / Serviço:</label>
-            </div>
-            <div class="form-field valor-total">
-                <div class="form-field-bg"></div>
-                <input type="text" class="form-field-input" id="saleValue" placeholder="0,00">
-                <label class="form-field-label">Valor total:</label>
-            </div>
-            <div class="form-field pagamento">
-                <div class="form-field-bg"></div>
-                <input type="date" class="form-field-input" id="paymentDate">
-                <label class="form-field-label">Vencimento:</label>
-            </div>
-            <button class="modal-btn primary sale-confirm" onclick="confirmSale()">
-                <span class="modal-btn-text primary">CONFIRMAR</span>
-            </button>
-        </div>`;
-}
-
-function createPaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    if (!modal) return;
-
-    modal.innerHTML = `
-        <div class="modal-container payment-container" id="paymentContainer">
-            <div class="payment-header">
-                <div class="modal-title">Registrar Pagamento</div>
-                <div class="modal-subtitle" id="paymentSubtitle">Selecione um cliente devedor.</div>
-            </div>
-
-            <div class="custom-select-wrapper">
-                <div class="custom-select-trigger" onclick="togglePaymentDropdown()">
-                    <span id="paymentSelectedName">Cliente Vinculado</span>
-                    <div class="dropdown-arrow"></div>
-                </div>
-                <div class="custom-options" id="paymentClientOptions"></div>
-            </div>
-
-            <div id="paymentDetailsArea" class="payment-details hidden">
-                <div class="debts-list-container" id="debtsList"></div>
-
-                <div class="payment-footer-inputs">
-                    <div class="footer-input-group">
-                        <label>Valor do Pagamento</label>
-                        <div class="input-box">
-                            <input type="text" id="payValueInput" placeholder="0,00" oninput="applyMoneyMask && applyMoneyMask(this)">
-                        </div>
-                        <div class="input-helper" id="maxDebtHelper">Máximo: R$ 0,00</div>
-                    </div>
-
-                    <div class="footer-input-group">
-                        <label>Data</label>
-                        <div class="input-box"><input type="date" id="payDateInput"></div>
-                    </div>
-
-                    <div class="footer-input-group">
-                        <label>Método</label>
-                        <div class="input-box">
-                            <select id="payMethodInput">
-                                <option value="">Selecione</option>
-                                <option value="pix">PIX</option>
-                                <option value="dinheiro">Dinheiro</option>
-                                <option value="cartao">Cartão</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="payment-actions">
-                    <button class="btn-cancel" onclick="closePaymentModal()">Cancelar</button>
-                    <button class="btn-confirm" onclick="confirmPaymentUI()">Registrar</button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
 // =============================================================================
-// 5. LÓGICA DO DROPDOWN CUSTOMIZADO (CORRIGIDA)
+// 5. LÓGICA DO DROPDOWN CUSTOMIZADO
 // =============================================================================
 
 function togglePaymentDropdown() {
@@ -484,65 +358,18 @@ function renderDebtsList(client) {
 }
 
 // =============================================================================
-// 6. CONTROLE GERAL DE ABERTURA/FECHAMENTO
+// 6. CONTROLE DE MODAIS (Gerenciado em app.utils.js)
 // =============================================================================
+// Todas as funções de abertura/fechamento de modais foram movidas para app.utils.js
+// para manter a arquitetura modularizada
 
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const container = document.getElementById('mainContainer');
-    if (modal && container) {
-        modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('show'), 10);
-        container.classList.add('blurred');
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const container = document.getElementById('mainContainer');
-    if (modal && container) {
-        container.classList.remove('blurred');
-        modal.classList.remove('show');
-        setTimeout(() => modal.style.display = 'none', 200);
-    }
-}
-
-// Payment Modal Open/Close
-function openPaymentModal() {
-    openModal('paymentModal');
-    
-    // Reset estado
-    currentPaymentClient = null; 
-    const container = document.getElementById('paymentContainer');
-    if(container) container.classList.remove('expanded');
-    
-    const details = document.getElementById('paymentDetailsArea');
-    if(details) details.classList.add('hidden');
-
-    const trigger = document.querySelector('.custom-select-trigger');
-    if(trigger) {
-        trigger.innerHTML = `
-            <span id="paymentSelectedName">Cliente Vinculado</span>
-            <div class="dropdown-arrow"></div>
-        `;
-        trigger.onclick = togglePaymentDropdown;
-    }
-    
-    const today = getTodayDate();
-    const dateInput = document.getElementById('payDateInput');
-    if(dateInput) dateInput.value = today;
-    
-    document.getElementById('payValueInput').value = '';
-    const methodInput = document.getElementById('payMethodInput');
-    if(methodInput) methodInput.selectedIndex = 0;
-}
-
-function closePaymentModal() { closeModal('paymentModal'); }
+// Funções de confirmação específicas mantidas aqui:
 
 // Confirmar Pagamento (Chamado pelo botão UI)
 function confirmPaymentUI() {
-    if (!currentPaymentClient) {
-        showNotification('Selecione um cliente primeiro!', 'error'); return;
+    if (!window.currentPaymentClient) {
+        showNotification('Selecione um cliente primeiro!', 'error');
+        return;
     }
 
     const valueInput = document.getElementById('payValueInput');
@@ -552,205 +379,14 @@ function confirmPaymentUI() {
     const paymentMethod = methodInput.value;
 
     if (!paymentValue || !paymentMethod) {
-        showNotification('Preencha valor e método.', 'error'); return;
+        showNotification('Preencha valor e método.', 'error');
+        return;
     }
 
     // Chama a função lógica (back-end logic)
-    const result = addNewPayment(currentPaymentClient.id, currentPaymentClient.name, paymentValue, paymentMethod);
+    const result = addNewPayment(window.currentPaymentClient.id, window.currentPaymentClient.name, paymentValue, paymentMethod);
 
     if (result) {
         closePaymentModal();
     }
-}
-
-// Client Modal
-function openClientModal() {
-    openModal('clientModal');
-    clearClientFields();
-}
-function closeClientModal() { closeModal('clientModal'); }
-function clearClientFields() {
-    ['clientName', 'clientPhone', 'clientAddress'].forEach(id => {
-        const field = document.getElementById(id);
-        if (field) field.value = '';
-    });
-}
-
-// Sale Modal
-function openSaleModal() {
-    openModal('saleModal');
-    clearSaleFields();
-    loadClients(); 
-}
-function closeSaleModal() { closeModal('saleModal'); }
-function clearSaleFields() {
-    const linkedClient = document.getElementById('linkedClient');
-    const saleProducts = document.getElementById('saleProducts');
-    const saleValue = document.getElementById('saleValue');
-    if (linkedClient) linkedClient.selectedIndex = 0;
-    if (saleProducts) saleProducts.value = '';
-    if (saleValue) saleValue.value = '';
-    
-    const today = getTodayDate();
-    const saleDate = document.getElementById('saleDate');
-    const paymentDate = document.getElementById('paymentDate');
-    if (saleDate) saleDate.value = today;
-    if (paymentDate) paymentDate.value = today;
-}
-
-// Carregar clientes no select SIMPLES (do modal de venda)
-function loadClients() {
-    const select = document.getElementById('linkedClient');
-    if (!select) return;
-    
-    while (select.children.length > 1) {
-        select.removeChild(select.lastChild);
-    }
-    
-    window.clientsList.forEach(client => {
-        const option = document.createElement('option');
-        option.value = client.id;
-        option.textContent = client.name;
-        select.appendChild(option);
-    });
-}
-
-// --- LÓGICA DO MODAL DE LEMBRETE (Central de Cobranças) ---
-
-function createReminderModal() {
-    const modal = document.getElementById('reminderModal');
-    if (!modal) return;
-
-    modal.innerHTML = `
-        <div class="modal-container reminder-container">
-            <div class="reminder-header">
-                <div class="modal-title">Enviar lembrete no Whatsapp</div>
-                <div class="modal-subtitle">Envie lembretes automatizados para clientes com pagamentos pendentes</div>
-            </div>
-            
-            <div class="reminder-main-box">
-                <div id="reminderListTitle" class="reminder-list-title"></div>
-
-                <div id="reminderListContainer" class="reminder-list-container">
-                    </div>
-            </div>
-
-            <button class="modal-btn secondary" onclick="closeReminderModal()" style="margin-top: 20px; border: none; font-weight: 600;">
-                Fechar
-            </button>
-        </div>
-    `;
-}
-
-function openReminderModal() {
-    const listContainer = document.getElementById('reminderListContainer');
-    const titleContainer = document.getElementById('reminderListTitle');
-    
-    if (!listContainer || !titleContainer) return;
-
-    listContainer.innerHTML = ''; 
-    titleContainer.innerHTML = '';
-    
-    let overdueCount = 0;
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    let overdueClients = [];
-
-    window.clientsList.forEach(client => {
-        const clientSales = window.salesList.filter(s => s.clientId === client.id && s.status !== 'Pago');
-        
-        // Filtra vencidos
-        const overdueSales = clientSales.filter(sale => {
-            const parts = sale.dueDate.split('-'); 
-            const due = new Date(parts[0], parts[1] - 1, parts[2]);
-            return due < today;
-        });
-
-        if (overdueSales.length > 0) {
-            overdueCount += overdueSales.length;
-            
-            // Pega o mais antigo
-            overdueSales.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-            const oldest = overdueSales[0];
-            
-            // Calc dias
-            const parts = oldest.dueDate.split('-');
-            const dueObj = new Date(parts[0], parts[1] - 1, parts[2]);
-            const diffDays = Math.ceil(Math.abs(today - dueObj) / (1000 * 60 * 60 * 24));
-            
-            overdueClients.push({
-                client,
-                sale: oldest,
-                days: diffDays,
-                count: overdueSales.length
-            });
-        }
-    });
-
-    overdueClients.sort((a, b) => b.days - a.days);
-
-    // 1. Atualiza o Título
-    if (overdueCount > 0) {
-        const plural = overdueCount > 1 ? 'Pagamentos Atrasados' : 'Pagamento Atrasado';
-        titleContainer.innerHTML = `${overdueCount} ${plural}`;
-        titleContainer.style.display = 'block';
-    } else {
-        titleContainer.style.display = 'none';
-    }
-
-    // 2. Gera os Cards
-    if (overdueClients.length > 0) {
-        overdueClients.forEach(item => {
-            const dateParts = item.sale.dueDate.split('-');
-            const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-            
-            // [NOVO] Pega o valor formatado
-            const debtValue = formatCurrency(item.sale.remainingValue);
-
-            const cardHTML = `
-                <div class="reminder-item-wrapper">
-                    <div class="reminder-floating-badge">
-                        ${item.days} Dias de Atraso
-                    </div>
-                    
-                    <div class="reminder-gray-card">
-                        <div class="reminder-info-left">
-                            <div class="client-name-bold">${item.client.name}</div>
-                            
-                            <div class="client-details-row" style="gap: 20px;">
-                                <span style="font-weight: 500; color: #000;">${item.sale.products}</span>
-                                
-                                <span style="font-weight: 700; color: #AF1E1E;">${debtValue}</span>
-                                
-                                <span style="color: #444;">Vencimento: ${dateFormatted}</span>
-                            </div>
-                        </div>
-
-                        <div class="reminder-action-right">
-                             <button class="btn-whatsapp-pill" onclick="sendReminderToClient(${item.client.id}, '${item.client.name}', '${item.client.phone}')">
-                                ENVIAR LEMBRETE
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            listContainer.innerHTML += cardHTML;
-        });
-    } else {
-        listContainer.innerHTML = `
-            <div style="text-align:center; padding: 40px; color: #5F5F5F; width: 100%;">
-                <p>Nenhum cliente com pagamento atrasado hoje.</p>
-            </div>
-        `;
-    }
-
-    openModal('reminderModal');
-}
-
-function closeReminderModal() { closeModal('reminderModal'); }
-
-function sendReminderToClient(id, name, phone) {
-    // Lógica de envio (mantida)
-    showNotification(`Abrindo WhatsApp de ${name}...`);
 }
